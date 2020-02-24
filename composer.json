@@ -1,0 +1,24 @@
+{
+    "name": "klako/scoutnet-api-replica",
+    "description": "En replika av Scoutnet.",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "autoload": {
+        "Scouterna\\ScoutnetMock\\": "src/"
+    },
+    "require": {
+        "ext-pdo": "*",
+        "ext-pdo_sqlite": "*",
+        "php": ">=7.3",
+        "symfony/process": "^5.0",
+        "slim/slim": "^4.4",
+        "slim/psr7": "^1.0",
+        "tuupola/slim-basic-auth": "^3.2",
+        "fzaninotto/faker": "^1.9",
+        "doctrine/orm": "^2.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    }
+}
