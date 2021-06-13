@@ -2,6 +2,7 @@
 
 namespace Scouterna\Mocknet\Database\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
 
 /**
@@ -48,7 +49,7 @@ class Member
     private $date_of_birth;
 
     /**
-     * @OneToOne(targetEntity="Status")
+     * @ManyToOne(targetEntity="Status")
      * @var Status
      */
     private $status;
@@ -60,7 +61,7 @@ class Member
     private $created_at;
 
     /**
-     * @OneToOne(targetEntity="Sex")
+     * @ManyToOne(targetEntity="Sex")
      * @var Sex
      */
     private $sex;
@@ -166,4 +167,22 @@ class Member
      * @var string
      */
     private $contact_leader_interest;
+
+    /**
+     * @OneToMany(targetEntity="GroupMember", mappedBy="member")
+     * @var ArrayCollection|GroupMember[]
+     */
+    private $groupMembers;
+
+    /**
+     * @OneToMany(targetEntity="GroupWaiter", mappedBy="member")
+     * @var ArrayCollection|GroupWaiter[]
+     */
+    private $groupWaits;
+
+    public function __construct()
+    {
+        $this->groupMembers = new ArrayCollection();
+        $this->groupWaits = new ArrayCollection();
+    }
 }

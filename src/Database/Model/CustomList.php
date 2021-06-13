@@ -2,6 +2,7 @@
 
 namespace Scouterna\Mocknet\Database\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
 
 /**
@@ -30,8 +31,19 @@ class CustomList
     private $description;
 
     /**
-     * @Column(name="group", type="integer")
-     * @var int
+     * @ManyToOne(targetEntity="Group", inversedBy="customLists")
+     * @var Group
      */
     private $group;
+
+    /**
+     * @OneToMany(targetEntity="CustomListRule",mappedBy="customList")
+     * @var ArrayCollection<CustomListRule>
+     */
+    private $rules;
+
+    public function __construct()
+    {
+        $this->rules = new ArrayCollection();
+    }
 }

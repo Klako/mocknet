@@ -2,6 +2,8 @@
 
 namespace Scouterna\Mocknet\Database\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity
  */
@@ -16,13 +18,13 @@ class GroupMember
     private $id;
 
     /**
-     * @OneToOne(targetEntity="Group")
+     * @ManyToOne(targetEntity="Group", inversedBy="members")
      * @var Group
      */
     private $group;
 
     /**
-     * @OneToOne(targetEntity="Member")
+     * @ManyToOne(targetEntity="Member", inversedBy="groupMembers")
      * @var Member
      */
     private $member;
@@ -33,5 +35,14 @@ class GroupMember
      */
     private $confirmedAt;
 
-    /** UNIQUE group,member */
+    /**
+     * @ManyToMany(targetEntity="GroupMemberRole", mappedBy="groupMembers")
+     * @var ArrayCollection|GroupRole[]
+     */
+    private $roles;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 }

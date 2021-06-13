@@ -2,6 +2,7 @@
 
 namespace Scouterna\Mocknet\Database\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
 
 /**
@@ -18,7 +19,7 @@ class Group
     private $id;
 
     /**
-     * @Column(type="string")
+     * @Column
      * @var string
      */
     private $name;
@@ -30,20 +31,45 @@ class Group
     private $groupEmail;
 
     /**
-     * @Column(type="string")
+     * @Column
      * @var string
      */
     private $email;
 
     /**
-     * @Column(type="string")
+     * @Column
      * @var string
      */
     private $description;
 
     /**
-     * @OneToOne(targetEntity="Member")
-     * @var int
+     * @OneToOne(targetEntity="GroupMember")
+     * @var GroupMember
      */
     private $leader;
+
+    /**
+     * @OneToMany(targetEntity="CustomList", mappedBy="group")
+     * @var ArrayCollection|CustomList[]
+     */
+    private $customLists;
+
+    /**
+     * @OneToMany(targetEntity="GroupMember", mappedBy="group")
+     * @var ArrayCollection|GroupMember[]
+     */
+    private $members;
+
+    /**
+     * @OneToMany(targetEntity="Troop", mappedBy="group")
+     * @var ArrayCollection|Troop[]
+     */
+    private $troops;
+
+    public function __construct()
+    {
+        $this->customLists = new ArrayCollection();
+        $this->members = new ArrayCollection();
+        $this->troops = new ArrayCollection();
+    }
 }

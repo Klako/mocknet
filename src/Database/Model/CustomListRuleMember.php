@@ -18,7 +18,7 @@ class CustomListRuleMember
     private $id;
 
     /**
-     * @ManyToOne(targetEntity="CustomListRule")
+     * @ManyToOne(targetEntity="CustomListRule", inversedBy="members")
      * @var CustomListRule
      */
     private $customListRule;

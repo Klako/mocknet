@@ -2,6 +2,7 @@
 
 namespace Scouterna\Mocknet\Database\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
 
 /**
@@ -24,8 +25,19 @@ class Sex
     private $patrol;
 
     /**
-     * @OneToOne(targetEntity="GroupMember")
-     * @var Member
+     * @ManyToOne(targetEntity="GroupMember", inversedBy="patrols")
+     * @var GroupMember
      */
     private $member;
+
+    /**
+     * @ManyToMany(targetEntity="PatrolRole", mappedBy="patrolMembers")
+     * @var ArrayCollection|PatrolRole[]
+     */
+    private $roles;
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 }

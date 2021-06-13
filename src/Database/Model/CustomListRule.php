@@ -2,6 +2,7 @@
 
 namespace Scouterna\Mocknet\Database\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
 
 /**
@@ -24,8 +25,19 @@ class CustomListRule
     private $title;
 
     /**
-     * @ManyToOne(targetEntity="CustomList")
+     * @ManyToOne(targetEntity="CustomList", inversedBy="rules")
      * @var CustomList
      */
-    private $customlist;
+    private $customList;
+
+    /**
+     * @OneToMany(targetEntity="CustomListRuleMember", mappedBy="customListRule")
+     * @var ArrayCollection<CustomListRuleMember>
+     */
+    private $members;
+
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+    }
 }

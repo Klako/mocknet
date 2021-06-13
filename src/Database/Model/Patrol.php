@@ -24,7 +24,7 @@ class Patrol
     private $name;
 
     /**
-     * @ManyToOne(targetEntity="Troop")
+     * @ManyToOne(targetEntity="Troop", inversedBy="patrols")
      * @var Troop
      */
     private $troop;

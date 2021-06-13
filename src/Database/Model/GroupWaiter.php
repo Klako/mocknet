@@ -24,10 +24,11 @@ class GroupWaiter
     private $group;
 
     /**
-     * @OneToOne(targetEntity="Member")
+     * @ManyToOne(targetEntity="Member", inversedBy="groupWaits")
      * @var Member
      */
     private $member;
+
     /**
      * @Column(type="datetime")
      * @var \DateTime
