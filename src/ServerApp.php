@@ -2,6 +2,7 @@
 
 namespace Scouterna\Mocknet;
 
+use Scouterna\Mocknet\Database\ManagerFactory;
 use Tuupola\Middleware\HttpBasicAuthentication;
 use Slim\Factory\AppFactory;
 
@@ -13,11 +14,11 @@ class ServerApp
     {
     }
 
-    public static function run($dbFile)
+    public static function run($connection)
     {
-        $this->sqliteFile = $dbFile;
-        $db = new \PDO("sqlite:$dbFile");
-        $db->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+        $managerFactory = new ManagerFactory();
+        $managerFactory->setConnection($connection);
+        $entityManager = $managerFactory->makeManager();
 
         $app = AppFactory::create();
 
@@ -30,9 +31,9 @@ class ServerApp
             }
         ]));
 
-        $app->get('/api/organisation/group', new GroupInfo($db));
-        $app->get('/api/group/memberlist', new Members($db));
-        $app->get('/api/group/customlists', new CustomLists($db));
+        $app->get('/api/organisation/group', new GroupInfo($entityManager));
+        $app->get('/api/group/memberlist', new Members($entityManager));
+        $app->get('/api/group/customlists', new CustomLists($entityManager));
 
         $app->run();
     }

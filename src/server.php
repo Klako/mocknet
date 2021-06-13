@@ -6,6 +6,7 @@ require __DIR__ . "..{$ds}vendor{$ds}autoload.php";
 
 use Scouterna\Mocknet\ServerApp;
 
-$dbFile = __DIR__ . "{$ds}membernet.db";
+$dbParamsB64 = $_ENV['MOCKNET_DBPARAMS'];
+$dbParams = json_decode(base64_decode($dbParamsB64), true);
 
-ServerApp::run($dbFile);
+ServerApp::run($dbParams);

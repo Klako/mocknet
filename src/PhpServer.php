@@ -13,16 +13,15 @@ class PhpServer
 
     private $process;
 
-    public function __construct(string $host, int $port)
+    public function __construct(string $host, int $port, $dbParams = null)
     {
         $this->host = $host;
         $this->port = $port;
-        $this->process = new Process([
-            "php",
-            "-S",
-            $host . ':' . $port,
-            __DIR__ . \DIRECTORY_SEPARATOR . "server.php"
-        ]);
+        $phpFile = __DIR__ . \DIRECTORY_SEPARATOR . 'server.php';
+        $cmd = ['php', '-S', "$host:$port", $phpFile];
+        $dbParamsB64 = \base64_encode(\json_encode($dbParams));
+        $env = ['MOCKNET_DBPARAMS' => $dbParamsB64];
+        $this->process = new Process($cmd, __DIR__, $env);
     }
 
     public function __destruct()
