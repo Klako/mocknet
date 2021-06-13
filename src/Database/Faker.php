@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\ScoutnetMock\Database;
+namespace Scouterna\Mocknet\Database;
 
 use Faker\Factory;
 

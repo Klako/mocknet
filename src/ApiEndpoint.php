@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\ScoutnetMock;
+namespace Scouterna\Mocknet;
 
 use Fig\Http\Message\StatusCodeInterface;
 use Slim\Psr7\Request;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\ScoutnetMock;
+namespace Scouterna\Mocknet;
 
 class DbGenerator
 {

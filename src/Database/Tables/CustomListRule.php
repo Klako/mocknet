@@ -1,34 +1,32 @@
 <?php
 
-namespace Scouterna\ScoutnetMock\Database;
+namespace Scouterna\Mocknet\Database;
 
 use Faker\Generator;
 
-class Sex extends TableConfig
+/**
+ * @Entity
+ * @Table("customlistrules")
+ */
+class CustomListRule
 {
-    public function __construct(Generator $faker)
-    {
-        parent::__construct($faker, 2);
-    }
+    /**
+     * @Id
+     * @Column(name="id", type="integer")
+     * @GeneratedValue
+     * @var int
+     */
+    private $id;
 
-    public static function getRowCols()
-    {
-        
-    }
+    /**
+     * @Column(name="title", type="string")
+     * @var string
+     */
+    private $title;
 
-    protected function getRowValues()
-    {
-        
-    }
-
-    public static function getTableSql()
-    {
-        return <<<SQL
-        CREATE TABLE "customlistrules" (
-        	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        	"title"	TEXT NOT NULL,
-        	"customlist"	INTEGER NOT NULL
-        );
-        SQL;
-    }
+    /**
+     * @ManyToOne(targetEntity="CustomList")
+     * @var CustomList
+     */
+    private $customlist;
 }

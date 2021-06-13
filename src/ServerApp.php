@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\ScoutnetMock;
+namespace Scouterna\Mocknet;
 
 use Tuupola\Middleware\HttpBasicAuthentication;
 use Slim\Factory\AppFactory;

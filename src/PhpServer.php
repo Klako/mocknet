@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\ScoutnetMock;
+namespace Scouterna\Mocknet;
 
 use Symfony\Component\Process\PhpProcess;
 use Symfony\Component\Process\Process;

@@ -1,49 +1,50 @@
 <?php
 
-namespace Scouterna\ScoutnetMock\Database;
+namespace Scouterna\Mocknet\Database;
 
 use Faker\Generator;
 
-class Group extends TableConfig
+/**
+ * @Entity
+ * @Table("groups")
+ */
+class Group
 {
-    public function __construct(Generator $faker)
-    {
-        parent::__construct($faker, 1);
-    }
+    /**
+     * @Id
+     * @Column(type="id")
+     * @GeneratedValue
+     * @var int
+     */
+    private $id;
 
-    public static function getRowCols()
-    {
-        return [
-            'name',
-            'group_email',
-            'email',
-            'description',
-            'leader'
-        ];
-    }
+    /**
+     * @Column(type="string")
+     * @var string
+     */
+    private $name;
 
-    protected function getRowValues()
-    {
-        return [
-            'name' => $this->faker->company,
-            'group_email' => true,
-            'email' => $this->faker->email,
-            'description' => $this->faker->text,
-            'leader' => null
-        ];
-    }
+    /**
+     * @Column(name="group_email", type="boolean")
+     * @var bool
+     */
+    private $groupEmail;
 
-    public static function getTableSql()
-    {
-        return <<<SQL
-        CREATE TABLE "groups" (
-	        "id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	        "name"	TEXT NOT NULL,
-	        "group_email"	BOOLEAN NOT NULL,
-	        "email"	TEXT NOT NULL DEFAULT "",
-	        "description"	TEXT NOT NULL DEFAULT "",
-	        "leader"	INTEGER,
-        );
-        SQL;
-    }
+    /**
+     * @Column(type="string")
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @Column(type="string")
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @OneToOne(targetEntity="Member")
+     * @var int
+     */
+    private $leader;
 }

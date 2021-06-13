@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\ScoutnetMock;
+namespace Scouterna\Mocknet;
 
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;

@@ -5,7 +5,10 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "autoload": {
-        "Scouterna\\ScoutnetMock\\": "src/"
+        "Scouterna\\Mocknet\\": "src/"
+    },
+    "autoload-dev": {
+        "Scouterna\\Mocknet\\Tests\\": "tests/"
     },
     "require": {
         "ext-pdo": "*",
@@ -15,7 +18,8 @@
         "slim/slim": "^4.4",
         "slim/psr7": "^1.0",
         "tuupola/slim-basic-auth": "^3.2",
-        "fzaninotto/faker": "^1.9"
+        "fzaninotto/faker": "^1.9",
+        "doctrine/orm": "^2.7"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0"
