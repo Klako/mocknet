@@ -1,14 +1,13 @@
 <?php
 
-namespace Scouterna\Mocknet\Database;
+namespace Scouterna\Mocknet\Database\Model;
 
 use Faker\Generator;
 
 /**
  * @Entity
- * @Table("customlistrules")
  */
-class CustomListRule
+class CustomList
 {
     /**
      * @Id
@@ -25,8 +24,14 @@ class CustomListRule
     private $title;
 
     /**
-     * @ManyToOne(targetEntity="CustomList")
-     * @var CustomList
+     * @Column(name="description", type="string")
+     * @var string
      */
-    private $customlist;
+    private $description;
+
+    /**
+     * @Column(name="group", type="integer")
+     * @var int
+     */
+    private $group;
 }

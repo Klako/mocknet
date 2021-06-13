@@ -1,18 +1,17 @@
 <?php
 
-namespace Scouterna\Mocknet\Database;
+namespace Scouterna\Mocknet\Database\Model;
 
 use Faker\Generator;
 
 /**
  * @Entity
- * @Table("groups")
  */
 class Group
 {
     /**
      * @Id
-     * @Column(type="id")
+     * @Column(type="integer")
      * @GeneratedValue
      * @var int
      */
@@ -25,7 +24,7 @@ class Group
     private $name;
 
     /**
-     * @Column(name="group_email", type="boolean")
+     * @Column(type="boolean")
      * @var bool
      */
     private $groupEmail;
