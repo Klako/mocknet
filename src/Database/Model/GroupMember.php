@@ -24,6 +24,12 @@ class GroupMember
     public $group;
 
     /**
+     * @OneToMany(targetEntity="TroopMember", mappedBy="member")
+     * @var mixed
+     */
+    public $troops;
+
+    /**
      * @ManyToMany(targetEntity="CustomListRule", inversedBy="members")
      * @var CustomListRule
      */
