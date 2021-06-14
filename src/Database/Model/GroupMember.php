@@ -15,31 +15,31 @@ class GroupMember
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @ManyToOne(targetEntity="Group", inversedBy="members")
      * @var Group
      */
-    private $group;
+    public $group;
 
     /**
      * @ManyToOne(targetEntity="Member", inversedBy="groupMembers")
      * @var Member
      */
-    private $member;
+    public $member;
 
     /**
      * @Column(type="datetime")
      * @var \DateTime
      */
-    private $confirmedAt;
+    public $confirmedAt;
 
     /**
      * @ManyToMany(targetEntity="GroupMemberRole", mappedBy="groupMembers")
      * @var ArrayCollection|GroupRole[]
      */
-    private $roles;
+    public $roles;
 
     public function __construct()
     {

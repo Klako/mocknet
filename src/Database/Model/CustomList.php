@@ -16,31 +16,31 @@ class CustomList
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column(name="title", type="string")
      * @var string
      */
-    private $title;
+    public $title;
 
     /**
      * @Column(name="description", type="string")
      * @var string
      */
-    private $description;
+    public $description;
 
     /**
      * @ManyToOne(targetEntity="Group", inversedBy="customLists")
      * @var Group
      */
-    private $group;
+    public $group;
 
     /**
      * @OneToMany(targetEntity="CustomListRule",mappedBy="customList")
      * @var ArrayCollection<CustomListRule>
      */
-    private $rules;
+    public $rules;
 
     public function __construct()
     {

@@ -15,17 +15,17 @@ class CustomListRuleMember
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @ManyToOne(targetEntity="CustomListRule", inversedBy="members")
      * @var CustomListRule
      */
-    private $customListRule;
+    public $customListRule;
 
     /**
      * @OneToOne(targetEntity="GroupMember")
      * @var GroupMember
      */
-    private $member;
+    public $member;
 }

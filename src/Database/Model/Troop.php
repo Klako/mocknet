@@ -16,25 +16,25 @@ class Troop
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @ManyToOne(targetEntity="Group", inversedBy="troops")
      * @var Group
      */
-    private $group;
+    public $group;
 
     /**
      * @OneToMany(targetEntity="TroopMember", mappedBy="troop")
      * @var ArrayCollection|TroopMember[]
      */
-    private $members;
+    public $members;
 
     public function __construct()
     {

@@ -16,25 +16,25 @@ class Sex
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @ManyToOne(targetEntity="Patrol")
      * @var Patrol
      */
-    private $patrol;
+    public $patrol;
 
     /**
      * @ManyToOne(targetEntity="GroupMember", inversedBy="patrols")
      * @var GroupMember
      */
-    private $member;
+    public $member;
 
     /**
      * @ManyToMany(targetEntity="PatrolRole", mappedBy="patrolMembers")
      * @var ArrayCollection|PatrolRole[]
      */
-    private $roles;
+    public $roles;
 
     public function __construct()
     {

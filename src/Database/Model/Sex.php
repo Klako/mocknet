@@ -15,11 +15,11 @@ class Sex
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column
      * @var string
      */
-    private $value;
+    public $value;
 }

@@ -16,19 +16,19 @@ class PatrolRole
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @ManyToMany(targetEntity="PatrolMember", inversedBy="roles")
      * @var ArrayCollection|PatrolMember[]
      */
-    private $patrolMembers;
+    public $patrolMembers;
 
     public function __construct()
     {

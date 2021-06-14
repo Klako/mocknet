@@ -15,23 +15,23 @@ class GroupWaiter
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @ManyToOne(targetEntity="Group")
      * @var Group
      */
-    private $group;
+    public $group;
 
     /**
      * @ManyToOne(targetEntity="Member", inversedBy="groupWaits")
      * @var Member
      */
-    private $member;
+    public $member;
 
     /**
      * @Column(type="datetime")
      * @var \DateTime
      */
-    private $waitingSince;
+    public $waitingSince;
 }

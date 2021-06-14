@@ -16,19 +16,19 @@ class GroupRole
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column(type="string")
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @ManyToMany(targetEntity="GroupMember", inversedBy="roles")
      * @var ArrayCollection|GroupMember[]
      */
-    private $groupMembers;
+    public $groupMembers;
 
     public function __construct()
     {

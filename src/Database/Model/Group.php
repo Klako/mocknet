@@ -16,55 +16,55 @@ class Group
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @Column(type="boolean")
      * @var bool
      */
-    private $groupEmail;
+    public $groupEmail;
 
     /**
      * @Column
      * @var string
      */
-    private $email;
+    public $email;
 
     /**
      * @Column
      * @var string
      */
-    private $description;
+    public $description;
 
     /**
      * @OneToOne(targetEntity="GroupMember")
      * @var GroupMember
      */
-    private $leader;
+    public $leader;
 
     /**
      * @OneToMany(targetEntity="CustomList", mappedBy="group")
      * @var ArrayCollection|CustomList[]
      */
-    private $customLists;
+    public $customLists;
 
     /**
      * @OneToMany(targetEntity="GroupMember", mappedBy="group")
      * @var ArrayCollection|GroupMember[]
      */
-    private $members;
+    public $members;
 
     /**
      * @OneToMany(targetEntity="Troop", mappedBy="group")
      * @var ArrayCollection|Troop[]
      */
-    private $troops;
+    public $troops;
 
     public function __construct()
     {

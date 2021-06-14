@@ -16,25 +16,25 @@ class CustomListRule
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column(name="title", type="string")
      * @var string
      */
-    private $title;
+    public $title;
 
     /**
      * @ManyToOne(targetEntity="CustomList", inversedBy="rules")
      * @var CustomList
      */
-    private $customList;
+    public $customList;
 
     /**
      * @OneToMany(targetEntity="CustomListRuleMember", mappedBy="customListRule")
      * @var ArrayCollection<CustomListRuleMember>
      */
-    private $members;
+    public $members;
 
     public function __construct()
     {

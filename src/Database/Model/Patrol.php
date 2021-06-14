@@ -15,17 +15,17 @@ class Patrol
      * @GeneratedValue
      * @var int
      */
-    private $id;
+    public $id;
 
     /**
      * @Column
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * @ManyToOne(targetEntity="Troop", inversedBy="patrols")
      * @var Troop
      */
-    private $troop;
+    public $troop;
 }
