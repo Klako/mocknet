@@ -25,13 +25,19 @@ class GroupMember
 
     /**
      * @OneToMany(targetEntity="TroopMember", mappedBy="member")
-     * @var mixed
+     * @var ArrayCollection|TroopMember[]
      */
     public $troops;
 
     /**
+     * @OneToMany(targetEntity="PatrolMember", mappedBy="member")
+     * @var ArrayCollection|PatrolMember[]
+     */
+    public $patrols;
+
+    /**
      * @ManyToMany(targetEntity="CustomListRule", inversedBy="members")
-     * @var CustomListRule
+     * @var ArrayCollection|CustomListRule[]
      */
     public $customListRules;
 
