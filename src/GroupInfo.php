@@ -12,7 +12,7 @@ class GroupInfo extends ApiEndpoint
     protected function getResponse(Request $request, Response $response, $args): Response
     {
         /** @var Group */
-        $group = $this->entityManager->find(Group::class, 1);
+        $group = $this->entityManager->find(Group::class, $this->groupId);
         $membercount = $group->members->count();
         $rolecount = (function ($group) {
             /** @var Group $group */
