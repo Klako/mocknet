@@ -61,6 +61,12 @@ class Group
     public $members;
 
     /**
+     * @OneToMany(targetEntity="GroupWaiter", mappedBy="group")
+     * @var ArrayCollection|GroupWaiter[]
+     */
+    public $waiters;
+
+    /**
      * @OneToMany(targetEntity="Troop", mappedBy="group")
      * @var ArrayCollection|Troop[]
      */
@@ -70,6 +76,7 @@ class Group
     {
         $this->customLists = new ArrayCollection();
         $this->members = new ArrayCollection();
+        $this->waiters = new ArrayCollection();
         $this->troops = new ArrayCollection();
     }
 }

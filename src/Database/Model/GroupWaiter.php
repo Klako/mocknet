@@ -18,7 +18,7 @@ class GroupWaiter
     public $id;
 
     /**
-     * @ManyToOne(targetEntity="Group")
+     * @ManyToOne(targetEntity="Group", inversedBy="waiters")
      * @var Group
      */
     public $group;
