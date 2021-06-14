@@ -24,6 +24,12 @@ class GroupMember
     public $group;
 
     /**
+     * @ManyToMany(targetEntity="CustomListRule", inversedBy="members")
+     * @var CustomListRule
+     */
+    public $customListRules;
+
+    /**
      * @ManyToOne(targetEntity="Member", inversedBy="groupMembers")
      * @var Member
      */
@@ -44,5 +50,6 @@ class GroupMember
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->customListRules = new ArrayCollection();
     }
 }

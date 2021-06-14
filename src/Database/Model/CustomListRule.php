@@ -31,8 +31,8 @@ class CustomListRule
     public $customList;
 
     /**
-     * @OneToMany(targetEntity="CustomListRuleMember", mappedBy="customListRule")
-     * @var ArrayCollection<CustomListRuleMember>
+     * @ManyToMany(targetEntity="GroupMember", mappedBy="customListRules")
+     * @var ArrayCollection|GroupMember[]
      */
     public $members;
 
