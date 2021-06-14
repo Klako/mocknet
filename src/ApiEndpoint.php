@@ -5,18 +5,19 @@ namespace Scouterna\Mocknet;
 use Fig\Http\Message\StatusCodeInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
+use Doctrine\ORM\EntityManager;
 
 abstract class ApiEndpoint
 {
-    /** @var \PDO */
-    protected $db;
+    /** @var EntityManager */
+    protected $entityManager;
 
     /** @var int */
     protected $groupId;
 
-    public function __construct($db)
+    public function __construct($entityManager)
     {
-        $this->db = $db;
+        $this->entityManager = $entityManager;
     }
 
     public function __invoke(Request $request, Response $response, $args)
