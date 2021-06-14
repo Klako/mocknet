@@ -8,7 +8,7 @@ use Faker\Generator;
 /**
  * @Entity
  */
-class Sex
+class PatrolMember
 {
     /**
      * @Id

@@ -25,6 +25,12 @@ class GroupRole
     public $name;
 
     /**
+     * @Column
+     * @var string
+     */
+    public $key;
+
+    /**
      * @ManyToMany(targetEntity="GroupMember", inversedBy="roles")
      * @var ArrayCollection|GroupMember[]
      */

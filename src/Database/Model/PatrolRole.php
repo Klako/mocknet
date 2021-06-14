@@ -25,6 +25,12 @@ class PatrolRole
     public $name;
 
     /**
+     * @Column
+     * @var string
+     */
+    public $key;
+
+    /**
      * @ManyToMany(targetEntity="PatrolMember", inversedBy="roles")
      * @var ArrayCollection|PatrolMember[]
      */
