@@ -2,6 +2,7 @@
 
 namespace Scouterna\Mocknet;
 
+use Scouterna\Mocknet\Database\Model\Group;
 use \Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
@@ -27,158 +28,56 @@ class Members extends ApiEndpoint
 
     private function getMembers()
     {
-        $stmt = $this->db->query(
-            <<<SQL
-            SELECT * FROM v_memberlist
-            WHERE `group` = {$this->db->quote($this->groupId)}
-            SQL
-        );
+        /** @var Group */
+        $group = $this->entityManager->find(Group::class, $this->groupId);
 
-        $returnObject = new \stdClass;
-        $returnObject->data = new \stdClass;
+        $returnObject = [];
 
-        while ($member = $stmt->fetch()) {
-            $memberObj = new \stdClass;
-            // Populate member info.
+        foreach ($group->members as $groupMember) {
+            $member = $groupMember->member;
+            $memberObj = [];
 
-            self::addValue($memberObj, 'member_no', $member);
-            self::addValue($memberObj, 'first_name', $member);
-            self::addValue($memberObj, 'last_name', $member);
-            self::addValue($memberObj, 'ssno', $member);
-            self::addValue($memberObj, 'note', $member);
-            self::addValue($memberObj, 'date_of_birth', $member);
-            self::addValueRaw($memberObj, 'status', 'status_name', $member);
-            self::addValue($memberObj, 'created_at', $member);
-            self::addValue($memberObj, 'confirmed_at', $member);
-            self::addValueRaw($memberObj, 'group', 'group_name', $member);
-            self::addValueRaw($memberObj, 'unit', 'unit_name', $member);
-            self::addValueRaw($memberObj, 'patrol', 'patrol_name', $member);
-            self::addValueRaw($memberObj, 'sex', 'sex_name', $member);
-            self::addValue($memberObj, 'address_1', $member);
-            self::addValue($memberObj, 'postcode', $member);
-            self::addValue($memberObj, 'town', $member);
-            self::addValue($memberObj, 'country', $member);
-            self::addValue($memberObj, 'email', $member);
-            self::addValue($memberObj, 'contact_alt_email', $member);
-            self::addValue($memberObj, 'contact_mobile_phone', $member);
-            self::addValue($memberObj, 'contact_home_phone', $member);
-            self::addValue($memberObj, 'contact_mothers_name', $member);
-            self::addValue($memberObj, 'contact_email_mum', $member);
-            self::addValue($memberObj, 'contact_mobile_mum', $member);
-            self::addValue($memberObj, 'contact_telephone_mum', $member);
-            self::addValue($memberObj, 'contact_fathers_name', $member);
-            self::addValue($memberObj, 'contact_email_dad', $member);
-            self::addValue($memberObj, 'contact_mobile_dad', $member);
-            self::addValue($memberObj, 'contact_telephone_dad', $member);
-            self::addValue($memberObj, 'contact_leader_interest', $member);
+            self::addMemberValues($memberObj, $member);
+            self::addValue($memberObj, 'confirmed_at', $groupMember->confirmedAt->format('Y-m-d'));
+            self::addValueRaw($memberObj, 'group', $group->id, $group->name);
+            /** @var \Scouterna\Mocknet\Database\Model\Troop */
+            $troop = $groupMember->troops->first()->troop;
+            self::addValueRaw($memberObj, 'unit', $troop->id, $troop->name);
+            /** @var \Scouterna\Mocknet\Database\Model\Patrol */
+            $patrol = $groupMember->troops->first()->patrol;
+            self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
 
-            // Initiate roles object
-            $rolesObj = null;
-
-            // Get all group roles of group and member
-            $groupRoles = $this->db->query(
-                <<<SQL
-                SELECT * FROM v_grouproles
-                WHERE `group` = {$this->db->quote($this->groupId)}
-                AND member = {$this->db->quote($member['member_no'])}
-                SQL
-            )->fetchAll();
-
-            // Make group roles objects
-            if ($groupRoles) {
-                $groupRolesObj = new \stdClass;
-                $groupRoleIds = [];
-                $groupRoleNames = [];
-                foreach ($groupRoles as $role) {
-                    if (!isset($groupRolesObj->{$role['group']})) {
-                        $groupRolesObj->{$role['group']} = new \stdClass;
-                    }
-                    $groupRolesObj->{$role['group']}->{$role['role_id']} = (object) [
-                        'role_id' => $role['role_id'],
-                        'role_name' => $role['role_name']
-                    ];
-                    $groupRoleIds[] = $role['role_id'];
-                    $groupRoleNames[] = $role['role_name'];
-                }
-                $rolesObj = new \stdClass;
-                $rolesObj->group = $groupRolesObj;
-                $memberObj->group_role = (object) [
-                    'raw_value' => \implode(',', $groupRoleIds),
-                    'value' => \implode(', ', $groupRoleNames)
+            $rolesObj = [];
+            foreach ($groupMember->roles as $role) {
+                $rolesObj['value']['group'][$group->id][$role->id] = [
+                    'role_id' => $role->id,
+                    'role_key' => $role->key,
+                    'role_name' => $role->name
                 ];
             }
-
-            // Get all troop roles of group and member
-            $troopRoles = $this->db->query(
-                <<<SQL
-                SELECT * FROM v_trooproles
-                WHERE `group` = {$this->db->quote($this->groupId)}
-                AND member = {$this->db->quote($member['member_no'])}
-                SQL
-            )->fetchAll();
-
-            // Make troop roles object
-            if ($troopRoles) {
-                $troopRolesObj = new \stdClass;
-                $troopRoleIds = [];
-                $troopRoleNames = [];
-                foreach ($troopRoles as $role) {
-                    if (!isset($troopRolesObj->{$role['troop']})) {
-                        $troopRolesObj->{$role['troop']} = new \stdClass;
-                    }
-                    $troopRolesObj->{$role['troop']}->{$role['role_id']} = (object) [
-                        'role_id' => $role['role_id'],
-                        'role_name' => $role['role_name']
-                    ];
-                    $troopRoleIds[] = $role['role_id'];
-                    $troopRoleNames[] = $role['role_name'];
-                }
-                if (!$rolesObj) {
-                    $rolesObj = new \stdClass;
-                }
-                $rolesObj->troop = $troopRolesObj;
-                $memberObj->unit_role = (object) [
-                    'raw_value' => \implode(',', $troopRoleIds),
-                    'value' => \implode(', ', $troopRoleNames)
-                ];
-            }
-
-            // Get all patrol roles of group and member
-            $patrolRoles = $this->db->query(
-                <<<SQL
-                SELECT * FROM v_patrolroles
-                WHERE `group` = {$this->db->quote($this->groupId)}
-                AND member = {$this->db->quote($member['member_no'])}
-                SQL
-            )->fetchAll();
-
-            // Make patrol roles object
-            if ($patrolRoles) {
-                $patrolRolesObj = new \stdClass;
-                foreach ($patrolRoles as $role) {
-                    if (!isset($patrolRolesObj->{$role['patrol']})) {
-                        $patrolRolesObj->{$role['patrol']} = new \stdClass;
-                    }
-                    $patrolRolesObj->{$role['patrol']}->{$role['role_id']} = (object) [
-                        'role_id' => $role['role_id'],
-                        'role_name' => $role['role_name']
+            foreach ($groupMember->troops as $troopMembers) {
+                foreach ($troopMembers->roles as $role) {
+                    $rolesObj['value']['troop'][$troopMembers->troop->id][$role->id] = [
+                        'role_id' => $role->id,
+                        'role_key' => $role->key,
+                        'role_name' => $role->name
                     ];
                 }
-                if (!$rolesObj) {
-                    $rolesObj = new \stdClass;
-                }
-                $rolesObj->troop = $patrolRolesObj;
             }
-
+            foreach ($groupMember->patrols as $patrolMembers) {
+                foreach ($patrolMembers->roles as $role) {
+                    $rolesObj['value']['patrol'][$patrolMembers->patrol->id][$role->id] = [
+                        'role_id' => $role->id,
+                        'role_id' => $role->key,
+                        'role_name' => $role->name
+                    ];
+                }
+            }
             if ($rolesObj) {
-                $memberObj->roles = (object) [
-                    'value' => $rolesObj
-                ];
-            } else {
-                $memberObj->roles = [];
+                $memberObj['roles'] = $rolesObj;
             }
 
-            $returnObject->data->{$member['member_no']} = $memberObj;
+            $returnObject['data'][$member->id] = $memberObj;
         }
 
         return $returnObject;
@@ -188,74 +87,74 @@ class Members extends ApiEndpoint
 
     private function getWaitingMembers()
     {
-        $stmt = $this->db->query(
-            <<<SQL
-            SELECT * FROM v_waitinglist
-            WHERE `group` = {$this->db->quote($this->groupId)}
-            SQL
-        );
+        /** @var Group */
+        $group = $this->entityManager->find(Group::class, $this->groupId);
 
-        $returnObject = new \stdClass;
-        $returnObject->data = new \stdClass;
+        $returnObject = [];
 
-        while ($member = $stmt->fetch()) {
-            $memberObj = new \stdClass;
-            // Populate member info.
-            self::addValue($memberObj, 'member_no', $member);
-            self::addValue($memberObj, 'first_name', $member);
-            self::addValue($memberObj, 'last_name', $member);
-            self::addValue($memberObj, 'ssno', $member);
-            self::addValue($memberObj, 'note', $member);
-            self::addValue($memberObj, 'date_of_birth', $member);
-            self::addValueRaw($memberObj, 'status', 'status_name', $member);
-            self::addValue($memberObj, 'created_at', $member);
-            self::addValue($memberObj, 'waiting_since', $member);
-            self::addValueRaw($memberObj, 'group', 'group_name', $member);
-            self::addValueRaw($memberObj, 'sex', 'sex_name', $member);
-            self::addValue($memberObj, 'address_1', $member);
-            self::addValue($memberObj, 'postcode', $member);
-            self::addValue($memberObj, 'town', $member);
-            self::addValue($memberObj, 'country', $member);
-            self::addValue($memberObj, 'email', $member);
-            self::addValue($memberObj, 'contact_alt_email', $member);
-            self::addValue($memberObj, 'contact_mobile_phone', $member);
-            self::addValue($memberObj, 'contact_home_phone', $member);
-            self::addValue($memberObj, 'contact_mothers_name', $member);
-            self::addValue($memberObj, 'contact_email_mum', $member);
-            self::addValue($memberObj, 'contact_mobile_mum', $member);
-            self::addValue($memberObj, 'contact_telephone_mum', $member);
-            self::addValue($memberObj, 'contact_fathers_name', $member);
-            self::addValue($memberObj, 'contact_email_dad', $member);
-            self::addValue($memberObj, 'contact_mobile_dad', $member);
-            self::addValue($memberObj, 'contact_telephone_dad', $member);
-            self::addValue($memberObj, 'contact_leader_interest', $member);
+        foreach ($group->waiters as $groupWaiter) {
+            $member = $groupWaiter->member;
+            $memberObj = [];
 
-            $returnObject->data->{$member['member_no']} = $memberObj;
+            self::addMemberValues($memberObj, $member);
+            self::addValue($memberObj, 'waiting_since', $groupWaiter->waitingSince->format('Y-m-d'));
+            self::addValueRaw($memberObj, 'group', $group->id, $group->name);
+
+            $returnObject['data'][$member->id] = $memberObj;
         }
 
         return $returnObject;
     }
 
-    private static function addValue($object, $name, &$dbRow)
+    /**
+     * @param array $object 
+     * @param \Scouterna\Mocknet\Database\Model\Member $member 
+     * @return void 
+     */
+    private static function addMemberValues(&$object, $member)
     {
-        if (!isset($dbRow[$name]) && $dbRow[$name] !== null) {
-            return false;
-        }
-        $object->{$name} = (object) [
-            'value' => strval($dbRow[$name])
-        ];
-        return true;
+        self::addValue($object, 'member_no', $member->id);
+        self::addValue($object, 'first_name', $member->first_name);
+        self::addValue($object, 'last_name', $member->last_name);
+        self::addValue($object, 'ssno', $member->ssno);
+        self::addValue($object, 'note', $member->note);
+        self::addValue($object, 'date_of_birth', $member->date_of_birth->format('Y-m-d'));
+        self::addValueRaw($object, 'status', $member->status->id, $member->status->value);
+        self::addValue($object, 'created_at', $member->created_at->format('Y-m-d'));
+        self::addValueRaw($object, 'sex', $member->sex->id, $member->sex->value);
+        self::addValue($object, 'address_1', $member->address_1);
+        self::addValue($object, 'postcode', $member->postcode);
+        self::addValue($object, 'town', $member->town);
+        self::addValue($object, 'country', $member->country);
+        self::addValue($object, 'email', $member->email);
+        self::addValue($object, 'contact_alt_email', $member->contact_alt_email);
+        self::addValue($object, 'contact_mobile_phone', $member->contact_mobile_phone);
+        self::addValue($object, 'contact_home_phone', $member->contact_home_phone);
+        self::addValue($object, 'contact_mothers_name', $member->contact_mothers_name);
+        self::addValue($object, 'contact_email_mum', $member->contact_email_mum);
+        self::addValue($object, 'contact_mobile_mum', $member->contact_mobile_mum);
+        self::addValue($object, 'contact_telephone_mum', $member->contact_telephone_mum);
+        self::addValue($object, 'contact_fathers_name', $member->contact_fathers_name);
+        self::addValue($object, 'contact_email_dad', $member->contact_email_dad);
+        self::addValue($object, 'contact_mobile_dad', $member->contact_mobile_dad);
+        self::addValue($object, 'contact_telephone_dad', $member->contact_telephone_dad);
+        self::addValue($object, 'contact_leader_interest', $member->contact_leader_interest);
     }
 
-    private static function addValueRaw($object, $rawName, $valueName, &$dbRow)
+    private static function addValue(&$object, $name, $value)
     {
-        if (!isset($dbRow[$rawName]) && $dbRow[$rawName] !== null) {
-            return false;
+        if ($value) {
+            $object[$name] = ['value' => strval($value)];
         }
-        $object->{$rawName} = (object) [
-            'raw_value' => strval($dbRow[$rawName]),
-            'value' => strval($dbRow[$valueName])
-        ];
-        return true;
+    }
+
+    private static function addValueRaw(&$object, $name, $rawValue, $value)
+    {
+        if ($rawValue) {
+            $object[$name] = [
+                'raw_value' => strval($rawValue),
+                'value' => strval($value)
+            ];
+        }
     }
 }
