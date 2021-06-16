@@ -77,7 +77,7 @@ class Group
      * 
      * @param bool $mock
      */
-    public function __construct($mock)
+    public function __construct($mock = true)
     {
         $this->customLists = new ArrayCollection();
         $this->members = new ArrayCollection();
