@@ -3,6 +3,7 @@
 namespace Scouterna\Mocknet;
 
 use Scouterna\Mocknet\Database\Model\Group;
+use Scouterna\Mocknet\Database\Model\Member;
 use \Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
@@ -119,9 +120,9 @@ class Members extends ApiEndpoint
         self::addValue($object, 'ssno', $member->ssno);
         self::addValue($object, 'note', $member->note);
         self::addValue($object, 'date_of_birth', $member->date_of_birth->format('Y-m-d'));
-        self::addValueRaw($object, 'status', $member->status->id, $member->status->value);
         self::addValue($object, 'created_at', $member->created_at->format('Y-m-d'));
-        self::addValueRaw($object, 'sex', $member->sex->id, $member->sex->value);
+        $object['sex'] = Member::SEX_ARRAY[$member->sex];
+        $object['status'] = Member::STATUS_ARRAY[$member->status];
         self::addValue($object, 'address_1', $member->address_1);
         self::addValue($object, 'postcode', $member->postcode);
         self::addValue($object, 'town', $member->town);
