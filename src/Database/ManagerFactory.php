@@ -21,7 +21,7 @@ class ManagerFactory
 
     /**
      * Sets the connection with params or an existing connection.
-     * @see \Doctrine\ORM\EntityManager::create()
+     * @link https://www.doctrine-project.org/projects/doctrine-dbal/en/2.13/reference/configuration.html#configuration
      * @param array<string,mixed>|\Doctrine\DBAL\Connection $connection 
      * @return void 
      */

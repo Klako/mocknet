@@ -2,7 +2,10 @@
 
 namespace Scouterna\Mocknet\Database\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
+use Scouterna\Mocknet\Util\Helper;
+use Scouterna\Mocknet\Organisation;
 
 /**
  * @Entity
@@ -28,4 +31,19 @@ class Patrol
      * @var Troop
      */
     public $troop;
+
+    /**
+     * @OneToMany(targetEntity="PatrolMember", mappedBy="patrol")
+     * @var ArrayCollection|PatrolMember[]
+     */
+    public $members;
+
+    public function __construct($mock = true)
+    {
+        $this->members = new ArrayCollection();
+        if ($mock){
+            $faker = Helper::getFaker();
+            $this->name = $faker->patrolName;
+        }
+    }
 }

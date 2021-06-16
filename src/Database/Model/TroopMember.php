@@ -36,8 +36,18 @@ class TroopMember
      */
     public $roles;
 
-    public function __construct()
+    public function __construct(Troop $troop, GroupMember $member)
     {
         $this->roles = new ArrayCollection();
+        $this->troop = $troop;
+        $troop->members->add($this);
+        $this->member = $member;
+        $member->troops->add($this);
+    }
+
+    public function addRole(TroopRole $role)
+    {
+        $this->roles->add($role);
+        $role->troopMembers->add($this);
     }
 }

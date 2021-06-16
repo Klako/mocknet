@@ -4,6 +4,7 @@ namespace Scouterna\Mocknet\Database\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
+use Scouterna\Mocknet\Util\Helper;
 
 /**
  * @Entity
@@ -36,8 +37,18 @@ class PatrolMember
      */
     public $roles;
 
-    public function __construct()
+    public function __construct(Patrol $patrol, GroupMember $member)
     {
         $this->roles = new ArrayCollection();
+        $this->patrol = $patrol;
+        $patrol->members->add($this);
+        $this->member = $member;
+        $member->patrols->add($this);
+    }
+
+    public function addRole(PatrolRole $patrolRole)
+    {
+        $this->roles->add($patrolRole);
+        $patrolRole->patrolMembers->add($this);
     }
 }

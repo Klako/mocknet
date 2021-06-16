@@ -3,6 +3,7 @@
 namespace Scouterna\Mocknet\Database\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Scouterna\Mocknet\Util\Helper;
 
 /**
  * @Entity
@@ -59,9 +60,23 @@ class GroupMember
      */
     public $roles;
 
-    public function __construct()
+    /**
+     * @param Group $group 
+     * @param Member $member 
+     * @param bool $mock
+     */
+    public function __construct($group, $member, $mock = true)
     {
         $this->roles = new ArrayCollection();
         $this->customListRules = new ArrayCollection();
+        if ($mock) {
+            $faker = Helper::getFaker();
+            $endDate = $member->created_at->add(new \DateInterval('P1Y'));
+            $this->confirmedAt = $faker->dateTimeBetween($member->created_at, $endDate);
+        }
+        $this->group = $group;
+        $group->members->add($this);
+        $this->member = $member;
+        $member->groupMembers->add($this);
     }
 }

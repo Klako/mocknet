@@ -34,4 +34,20 @@ class GroupWaiter
      * @var \DateTime
      */
     public $waitingSince;
+
+    /**
+     * @param Group $group
+     * @param Member $member
+     * @param bool $faker
+     */
+    public function __construct($group, $member, $mock = true)
+    {
+        $this->group = $group;
+        $group->waiters->add($this);
+        $this->member = $member;
+        $member->groupWaits->add($this);
+        if ($mock) {
+            $this->waitingSince = clone $member->created_at;
+        }
+    }
 }

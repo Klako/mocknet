@@ -4,6 +4,7 @@ namespace Scouterna\Mocknet\Database\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
+use Scouterna\Mocknet\Util\Helper;
 
 /**
  * @Entity
@@ -36,8 +37,18 @@ class CustomListRule
      */
     public $members;
 
-    public function __construct()
+    /**
+     * @param Generator $mock
+     * @param CustomList $list
+     */
+    public function __construct($list, $mock = true)
     {
         $this->members = new ArrayCollection();
+        if ($mock) {
+            $faker = Helper::getFaker();
+            $this->title = "{$faker->domainWord} list rule";
+        }
+        $this->customList = $list;
+        $list->rules->add($this);
     }
 }

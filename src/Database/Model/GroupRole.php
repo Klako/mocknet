@@ -4,6 +4,7 @@ namespace Scouterna\Mocknet\Database\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
+use Scouterna\Mocknet\Util\Helper;
 
 /**
  * @Entity
@@ -36,8 +37,16 @@ class GroupRole
      */
     public $groupMembers;
 
-    public function __construct()
+    /**
+     * @param bool $faker
+     */
+    public function __construct($mock = true)
     {
         $this->groupMembers = new ArrayCollection();
+        if ($mock) {
+            $faker = Helper::getFaker();
+            $this->name = $faker->groupRole;
+            $this->key = Helper::keyify($this->name);
+        }
     }
 }
