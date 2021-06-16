@@ -38,9 +38,11 @@ class Patrol
      */
     public $members;
 
-    public function __construct($mock = true)
+    public function __construct(Troop $troop, $mock = true)
     {
         $this->members = new ArrayCollection();
+        $this->troop = $troop;
+        $troop->patrols->add($this);
         if ($mock){
             $faker = Helper::getFaker();
             $this->name = $faker->patrolName;

@@ -32,6 +32,12 @@ class Troop
     public $group;
 
     /**
+     * @OneToMany(targetEntity="Patrol", mappedBy="troop")
+     * @var ArrayCollection|Patrol[]
+     */
+    public $patrols;
+
+    /**
      * @OneToMany(targetEntity="TroopMember", mappedBy="troop")
      * @var ArrayCollection|TroopMember[]
      */
@@ -39,6 +45,7 @@ class Troop
 
     public function __construct(Group $group, $mock = true)
     {
+        $this->patrols = new ArrayCollection();
         $this->members = new ArrayCollection();
         $this->group = $group;
         $group->troops->add($this);
