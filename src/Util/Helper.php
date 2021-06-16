@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\Mocknet;
+namespace Scouterna\Mocknet\Util;
 
 class Helper
 {
@@ -9,5 +9,10 @@ class Helper
         $faker = \Faker\Factory::create('sv_SE');
         $faker->addProvider(new Organisation($faker));
         return $faker;
+    }
+
+    public static function keyify($value)
+    {
+        return \mb_strtolower(\str_replace(' ', '_', $value));
     }
 }

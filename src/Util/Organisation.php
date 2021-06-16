@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\Mocknet;
+namespace Scouterna\Mocknet\Util;
 
 class Organisation extends \Faker\Provider\Base
 {
