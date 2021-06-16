@@ -1,6 +1,6 @@
 <?php
 
-namespace Scouterna\Mocknet;
+namespace Scouterna\Mocknet\Api;
 
 use Scouterna\Mocknet\Database\Model\Group;
 use Scouterna\Mocknet\Database\Model\Member;

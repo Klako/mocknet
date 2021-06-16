@@ -31,9 +31,9 @@ class ServerApp
             }
         ]));
 
-        $app->get('/api/organisation/group', new GroupInfo($entityManager));
-        $app->get('/api/group/memberlist', new Members($entityManager));
-        $app->get('/api/group/customlists', new CustomLists($entityManager));
+        $app->get('/api/organisation/group', new Api\GroupInfo($entityManager));
+        $app->get('/api/group/memberlist', new Api\Members($entityManager));
+        $app->get('/api/group/customlists', new Api\CustomLists($entityManager));
 
         $app->run();
     }
