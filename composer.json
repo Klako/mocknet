@@ -5,7 +5,9 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "autoload": {
-        "Scouterna\\Mocknet\\": "src/"
+        "psr-4": {
+            "Scouterna\\Mocknet\\": "src/"
+        }
     },
     "autoload-dev": {
         "Scouterna\\Mocknet\\Tests\\": "tests/"
