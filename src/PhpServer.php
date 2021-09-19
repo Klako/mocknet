@@ -36,8 +36,8 @@ class PhpServer
         $dbParamsB64 = \base64_encode(\json_encode($dbParams));
         $env = [
             'MOCKNET_DBPARAMS' => $dbParamsB64,
-            'GROUP_ID' => $groupId,
-            'API_KEY' => $apiKey
+            'MOCKNET_GROUP_ID' => $groupId,
+            'MOCKNET_API_KEY' => $apiKey
         ];
         $this->process = new Process($cmd, __DIR__, $env);
     }
