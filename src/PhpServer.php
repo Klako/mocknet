@@ -22,14 +22,23 @@ class PhpServer
      * @link https://www.doctrine-project.org/projects/doctrine-dbal/en/2.13/reference/configuration.html#configuration
      * @return void 
      */
-    public function __construct(string $host, int $port, array $dbParams)
-    {
+    public function __construct(
+        string $host,
+        int $port,
+        array $dbParams,
+        int $groupId,
+        string $apiKey
+    ) {
         $this->host = $host;
         $this->port = $port;
         $phpFile = __DIR__ . \DIRECTORY_SEPARATOR . 'server.php';
         $cmd = ['php', '-S', "$host:$port", $phpFile];
         $dbParamsB64 = \base64_encode(\json_encode($dbParams));
-        $env = ['MOCKNET_DBPARAMS' => $dbParamsB64];
+        $env = [
+            'MOCKNET_DBPARAMS' => $dbParamsB64,
+            'GROUP_ID' => $groupId,
+            'API_KEY' => $apiKey
+        ];
         $this->process = new Process($cmd, __DIR__, $env);
     }
 

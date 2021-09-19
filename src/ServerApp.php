@@ -14,7 +14,7 @@ class ServerApp
     {
     }
 
-    public static function run($connection)
+    public static function run($connection, $groupId, $apiKey)
     {
         $managerFactory = new ManagerFactory();
         $managerFactory->setConnection($connection);
@@ -24,7 +24,7 @@ class ServerApp
 
         $app->add(new HttpBasicAuthentication([
             'users' => [
-                '1' => 'uihiu23h4i2u3h498fsufs8ef'
+                $groupId => $apiKey
             ],
             'before' => function ($request, $arguments) {
                 return $request->withAttribute('groupId', $arguments['user']);

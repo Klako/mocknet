@@ -9,4 +9,7 @@ use Scouterna\Mocknet\ServerApp;
 $dbParamsB64 = $_ENV['MOCKNET_DBPARAMS'];
 $dbParams = json_decode(base64_decode($dbParamsB64), true);
 
-ServerApp::run($dbParams);
+$groupId = $_ENV['GROUP_ID'];
+$apiKey = $_ENV['API_KEY'];
+
+ServerApp::run($dbParams, $groupId, $apiKey);
