@@ -1,5 +1,5 @@
 {
-    "name": "klako/scoutnet-api-replica",
+    "name": "klako/mocknet",
     "description": "En replika av Scoutnet.",
     "type": "library",
     "license": "MIT",
