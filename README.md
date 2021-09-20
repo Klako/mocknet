@@ -44,12 +44,16 @@ The server.php file can be used as an entry point for a web server.
 
 The following environment variables must be specified.
 
+- `MOCKNET_VENDOR_FOLDER` Path to the composer vendor folder
 - `MOCKNET_DBPARAMS` A base64 encoded json object with the database parameters
 - `MOCKNET_GROUP_ID` The group id to be required in the api calls
 - `MOCKNET_API_KEY` The api key to be required in the api calls
 
 ## Generating and reading the database
 
-In order to simply generate a group, use the `Scouterna\Mocknet\Database\DbGenerator` class. It takes a database connection and generates a group, new members, troops, patrols etc.
+In order to simply generate a group, run the [generator.php](src/generator.php) file with the following environment variables.
+- `MOCKNET_VENDOR_FOLDER` Path to the composer vendor folder
+- `MOCKNET_DBPARAMS` A base64 encoded json object with the database parameters
+- `MOCKNET_GROUP_ID` The group id of the generated group
 
 In order to create a manager for reading as well as writing to the database, use the `Scouterna\Mocknet\Database\ManagerFactory` class. The namespace `Scouterna\Mocknet\Database\Model` contains all entities that are used by the manager and the api.
