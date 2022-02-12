@@ -59,7 +59,7 @@ class Member
     public $ssno;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $note;
@@ -119,73 +119,73 @@ class Member
     public $email;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_alt_email;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_mobile_phone;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_home_phone;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_mothers_name;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_email_mum;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_mobile_mum;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_telephone_mum;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_fathers_name;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_email_dad;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_mobile_dad;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_telephone_dad;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $contact_leader_interest;
@@ -215,6 +215,7 @@ class Member
             $this->last_name = $faker->lastName;
             $this->note = $this->random($faker, 'sentence', 3);
             $this->date_of_birth = $faker->dateTimeBetween('-40 years', '-8 years');
+            $this->created_at = $faker->dateTimeBetween($this->date_of_birth);
             $this->sex = $faker->randomElement(self::SEX_ARRAY)['raw_value'];
             $this->status = $faker->randomElement(self::STATUS_ARRAY)['raw_value'];
             $this->ssno = $faker->personalIdentityNumber($this->date_of_birth);
