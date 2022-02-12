@@ -9,7 +9,7 @@ use Scouterna\Mocknet\Util\Helper;
 /**
  * @Entity
  */
-class Group
+class ScoutGroup
 {
     /**
      * @Id
@@ -32,7 +32,7 @@ class Group
     public $groupEmail;
 
     /**
-     * @Column
+     * @Column(nullable=true)
      * @var string
      */
     public $email;
@@ -87,6 +87,10 @@ class Group
             $faker = Helper::getFaker();
             $this->name = $faker->scoutGroupName;
             $this->description = $faker->sentence;
+            $this->groupEmail = $faker->randomElement([true, false]);
+            if ($this->groupEmail) {
+                $this->email = $faker->safeEmail;
+            }
         }
     }
 }

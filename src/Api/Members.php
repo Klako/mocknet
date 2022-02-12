@@ -2,7 +2,7 @@
 
 namespace Scouterna\Mocknet\Api;
 
-use Scouterna\Mocknet\Database\Model\Group;
+use Scouterna\Mocknet\Database\Model\ScoutGroup;
 use Scouterna\Mocknet\Database\Model\Member;
 use \Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -29,8 +29,8 @@ class Members extends ApiEndpoint
 
     private function getMembers()
     {
-        /** @var Group */
-        $group = $this->entityManager->find(Group::class, $this->groupId);
+        /** @var ScoutGroup */
+        $group = $this->entityManager->find(ScoutGroup::class, $this->groupId);
 
         $returnObject = [];
 
@@ -88,8 +88,8 @@ class Members extends ApiEndpoint
 
     private function getWaitingMembers()
     {
-        /** @var Group */
-        $group = $this->entityManager->find(Group::class, $this->groupId);
+        /** @var ScoutGroup */
+        $group = $this->entityManager->find(ScoutGroup::class, $this->groupId);
 
         $returnObject = [];
 

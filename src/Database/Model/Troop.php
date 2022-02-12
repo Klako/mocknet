@@ -26,8 +26,8 @@ class Troop
     public $name;
 
     /**
-     * @ManyToOne(targetEntity="Group", inversedBy="troops")
-     * @var Group
+     * @ManyToOne(targetEntity="ScoutGroup", inversedBy="troops")
+     * @var ScoutGroup
      */
     public $group;
 
@@ -43,7 +43,7 @@ class Troop
      */
     public $members;
 
-    public function __construct(Group $group, $mock = true)
+    public function __construct(ScoutGroup $group, $mock = true)
     {
         $this->patrols = new ArrayCollection();
         $this->members = new ArrayCollection();

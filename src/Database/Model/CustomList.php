@@ -31,8 +31,8 @@ class CustomList
     public $description;
 
     /**
-     * @ManyToOne(targetEntity="Group", inversedBy="customLists")
-     * @var Group
+     * @ManyToOne(targetEntity="ScoutGroup", inversedBy="customLists")
+     * @var ScoutGroup
      */
     public $group;
 
@@ -44,7 +44,7 @@ class CustomList
 
     /**
      * @param bool $mock
-     * @param Group $group
+     * @param ScoutGroup $group
      */
     public function __construct($group, $mock = true)
     {

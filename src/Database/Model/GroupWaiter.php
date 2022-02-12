@@ -18,8 +18,8 @@ class GroupWaiter
     public $id;
 
     /**
-     * @ManyToOne(targetEntity="Group", inversedBy="waiters")
-     * @var Group
+     * @ManyToOne(targetEntity="ScoutGroup", inversedBy="waiters")
+     * @var ScoutGroup
      */
     public $group;
 
@@ -36,7 +36,7 @@ class GroupWaiter
     public $waitingSince;
 
     /**
-     * @param Group $group
+     * @param ScoutGroup $group
      * @param Member $member
      * @param bool $faker
      */

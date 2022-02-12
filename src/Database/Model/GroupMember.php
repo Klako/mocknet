@@ -19,8 +19,8 @@ class GroupMember
     public $id;
 
     /**
-     * @ManyToOne(targetEntity="Group", inversedBy="members")
-     * @var Group
+     * @ManyToOne(targetEntity="ScoutGroup", inversedBy="members")
+     * @var ScoutGroup
      */
     public $group;
 
@@ -55,13 +55,13 @@ class GroupMember
     public $confirmedAt;
 
     /**
-     * @ManyToMany(targetEntity="GroupMemberRole", mappedBy="groupMembers")
+     * @ManyToMany(targetEntity="GroupRole", mappedBy="groupMembers")
      * @var ArrayCollection|GroupRole[]
      */
     public $roles;
 
     /**
-     * @param Group $group 
+     * @param ScoutGroup $group 
      * @param Member $member 
      * @param bool $mock
      */

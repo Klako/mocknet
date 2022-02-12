@@ -4,7 +4,7 @@ namespace Scouterna\Mocknet\Api;
 
 use Scouterna\Mocknet\Database\Model\CustomList;
 use Scouterna\Mocknet\Database\Model\CustomListRule;
-use Scouterna\Mocknet\Database\Model\Group;
+use Scouterna\Mocknet\Database\Model\ScoutGroup;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 
@@ -28,8 +28,8 @@ class CustomLists extends ApiEndpoint
 
     private function getLists(Response $response): Response
     {
-        /** @var Group */
-        $group = $this->entityManager->find(Group::class, $this->groupId);
+        /** @var ScoutGroup */
+        $group = $this->entityManager->find(ScoutGroup::class, $this->groupId);
         $lists = $group->customLists;
 
         $returnList = [];

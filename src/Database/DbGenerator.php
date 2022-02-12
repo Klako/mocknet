@@ -27,7 +27,7 @@ class DbGenerator
         $entityManager = $factory->makeManager();
 
         $faker = Helper::getFaker();
-        $group = new Model\Group();
+        $group = new Model\ScoutGroup();
         $group->id = $groupId;
         $entityManager->persist($group);
         foreach (\range(1, 100) as $m) {
@@ -44,7 +44,7 @@ class DbGenerator
     /**
      * Generates troops for the given group
      * @param \Doctrine\ORM\EntityManager $entityManager 
-     * @param Model\Group $group
+     * @param Model\ScoutGroup $group
      * @return void 
      */
     private function createTroops($entityManager, $group)

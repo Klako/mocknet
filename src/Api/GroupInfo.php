@@ -2,7 +2,7 @@
 
 namespace Scouterna\Mocknet\Api;
 
-use Scouterna\Mocknet\Database\Model\Group;
+use Scouterna\Mocknet\Database\Model\ScoutGroup;
 use Scouterna\Mocknet\Database\Model\Member;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -11,11 +11,11 @@ class GroupInfo extends ApiEndpoint
 {
     protected function getResponse(Request $request, Response $response, $args): Response
     {
-        /** @var Group */
-        $group = $this->entityManager->find(Group::class, $this->groupId);
+        /** @var ScoutGroup */
+        $group = $this->entityManager->find(ScoutGroup::class, $this->groupId);
         $membercount = $group->members->count();
         $rolecount = (function ($group) {
-            /** @var Group $group */
+            /** @var ScoutGroup $group */
             $sum = 0;
             foreach ($group->members as $member) {
                 if ($member->roles->count()) {
