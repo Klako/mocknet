@@ -27,34 +27,35 @@ class GroupInfo extends ApiEndpoint
         $waitingcount = $group->waiters->count();
         $group_email = $group->groupEmail ? 'true' : 'false';
         $leader = (function ($leader) {
-            /** @var Member $leader */
+            /** @var \Scouterna\Mocknet\Database\Model\GroupMember $leader */
             if ($leader) {
+                $member = $leader->member;
                 return <<<JSON
-                {
-                    "name": "{$leader->first_name} {$leader->last_name}",
-                    "contactdetails": "{$leader->email}"
-                }
-                JSON;
+                    {
+                        "name": "{$member->first_name} {$member->last_name}",
+                        "contactdetails": "{$member->email}"
+                    }
+                    JSON;
             } else {
                 return <<<JSON
-                {
-                    "name": "",
-                    "contactdetails": ""
-                }
-                JSON;
+                    {
+                        "name": "",
+                        "contactdetails": ""
+                    }
+                    JSON;
             }
-        })($group->leader->member);
+        })($group->leader);
 
         $body = <<<JSON
         {
             "Group": {
-                "name": "{$group['name']}",
+                "name": "{$group->name}",
                 "membercount": $membercount,
                 "rolecount": $rolecount,
                 "waitingcount": $waitingcount,
                 "group_email": $group_email,
-                "email": "{$group['email']}",
-                "description": "{$group['description']}"
+                "email": "{$group->email}",
+                "description": "{$group->description}"
             },
             "Leader": $leader,
             "projects": "Not implemented."
