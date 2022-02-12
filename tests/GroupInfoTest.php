@@ -24,7 +24,7 @@ class GroupInfoTest extends TestCase
         $factory = new ManagerFactory();
         $factory->setConnection([
             'driver' => 'pdo_sqlite',
-            'path' => 'db.sqlite'
+            'path' => ':memory:'
         ]);
         self::$entityManager = $factory->makeManager();
         $metadataFactory = self::$entityManager->getMetadataFactory();
