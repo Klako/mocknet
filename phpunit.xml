@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap = "vendor/autoload.php"
+    colors                      = "true"
+    cacheResultFile             = "testresults/"
+    >
+
+    <testsuites>
+        <testsuite name="Project tests">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <junit outputFile="testresults/junit.xml" />
+        <teamcity outputFile="testresults/teamcity.txt"/>
+        <testdoxHtml outputFile="testresults/testdox.html"/>
+        <testdoxText outputFile="testresults/testdox.txt"/>
+        <testdoxXml outputFile="testresults/testdox.xml"/>
+        <text outputFile="testresults/logfile.txt"/>
+    </logging>
+
+</phpunit>
