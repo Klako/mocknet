@@ -69,6 +69,9 @@ class GroupMember
     {
         $this->roles = new ArrayCollection();
         $this->customListRules = new ArrayCollection();
+        $this->troops = new ArrayCollection();
+        $this->patrols = new ArrayCollection();
+        $this->customListRules = new ArrayCollection();
         if ($mock) {
             $faker = Helper::getFaker();
             $endDate = $member->created_at->add(new \DateInterval('P1Y'));

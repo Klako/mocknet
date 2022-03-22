@@ -41,12 +41,16 @@ class Members extends ApiEndpoint
             self::addMemberValues($memberObj, $member);
             self::addValue($memberObj, 'confirmed_at', $groupMember->confirmedAt->format('Y-m-d'));
             self::addValueRaw($memberObj, 'group', $group->id, $group->name);
-            /** @var \Scouterna\Mocknet\Database\Model\Troop */
-            $troop = $groupMember->troops->first()->troop;
-            self::addValueRaw($memberObj, 'unit', $troop->id, $troop->name);
-            /** @var \Scouterna\Mocknet\Database\Model\Patrol */
-            $patrol = $groupMember->troops->first()->patrol;
-            self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
+            if (!$groupMember->troops->isEmpty()) {
+                /** @var \Scouterna\Mocknet\Database\Model\Troop */
+                $troop = $groupMember->troops->first()->troop;
+                self::addValueRaw($memberObj, 'unit', $troop->id, $troop->name);
+            }
+            if (!$groupMember->patrols->isEmpty()) {
+                /** @var \Scouterna\Mocknet\Database\Model\Patrol */
+                $patrol = $groupMember->troops->first()->patrol;
+                self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
+            }
 
             $rolesObj = [];
             foreach ($groupMember->roles as $role) {
