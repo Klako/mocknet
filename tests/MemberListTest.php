@@ -109,7 +109,6 @@ class MemberListTest extends TestCase
             self::checkMemberVal($member->contact_email_dad, $memberObj, 'contact_email_dad');
             self::checkMemberVal($member->contact_mobile_dad, $memberObj, 'contact_mobile_dad');
             self::checkMemberVal($member->contact_telephone_dad, $memberObj, 'contact_telephone_dad');
-            self::checkMemberVal($member->contact_leader_interest, $memberObj, 'contact_leader_interest');
         }
     }
 
