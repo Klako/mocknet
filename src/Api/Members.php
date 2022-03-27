@@ -46,10 +46,12 @@ class Members extends ApiEndpoint
                 $troop = $groupMember->troops->first()->troop;
                 self::addValueRaw($memberObj, 'unit', $troop->id, $troop->name);
             }
-            if (!$groupMember->patrols->isEmpty()) {
-                /** @var \Scouterna\Mocknet\Database\Model\Patrol */
-                $patrol = $groupMember->troops->first()->patrol;
-                self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
+            foreach ($groupMember->troops as $troop) {
+                if ($troop->patrol !== null) {
+                    $patrol = $troop->patrol;
+                    self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
+                    break;
+                }
             }
 
             $rolesObj = [];
@@ -68,16 +70,17 @@ class Members extends ApiEndpoint
                         'role_name' => $role->name
                     ];
                 }
-            }
-            foreach ($groupMember->patrols as $patrolMembers) {
-                foreach ($patrolMembers->roles as $role) {
-                    $rolesObj['value']['patrol'][$patrolMembers->patrol->id][$role->id] = [
-                        'role_id' => $role->id,
-                        'role_id' => $role->key,
-                        'role_name' => $role->name
-                    ];
+                if ($troopMembers->patrol) {
+                    foreach ($troopMembers->patrolRoles as $role) {
+                        $rolesObj['value']['patrol'][$troopMembers->patrol->id][$role->id] = [
+                            'role_id' => $role->id,
+                            'role_id' => $role->key,
+                            'role_name' => $role->name
+                        ];
+                    }
                 }
             }
+
             if ($rolesObj) {
                 $memberObj['roles'] = $rolesObj;
             }

@@ -33,8 +33,8 @@ class Patrol
     public $troop;
 
     /**
-     * @OneToMany(targetEntity="PatrolMember", mappedBy="patrol")
-     * @var ArrayCollection|PatrolMember[]
+     * @OneToMany(targetEntity="TroopMember", mappedBy="patrol")
+     * @var ArrayCollection|TroopMember[]
      */
     public $members;
 

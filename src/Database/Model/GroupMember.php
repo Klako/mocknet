@@ -31,12 +31,6 @@ class GroupMember
     public $troops;
 
     /**
-     * @OneToMany(targetEntity="PatrolMember", mappedBy="member")
-     * @var ArrayCollection|PatrolMember[]
-     */
-    public $patrols;
-
-    /**
      * @ManyToMany(targetEntity="CustomListRule", inversedBy="members")
      * @var ArrayCollection|CustomListRule[]
      */
@@ -70,7 +64,6 @@ class GroupMember
         $this->roles = new ArrayCollection();
         $this->customListRules = new ArrayCollection();
         $this->troops = new ArrayCollection();
-        $this->patrols = new ArrayCollection();
         $this->customListRules = new ArrayCollection();
         if ($mock) {
             $faker = Helper::getFaker();

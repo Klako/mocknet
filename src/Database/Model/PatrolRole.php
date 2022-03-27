@@ -32,17 +32,17 @@ class PatrolRole
     public $key;
 
     /**
-     * @ManyToMany(targetEntity="PatrolMember", inversedBy="roles")
-     * @var ArrayCollection|PatrolMember[]
+     * @ManyToMany(targetEntity="TroopMember", inversedBy="roles")
+     * @var ArrayCollection|TroopMember[]
      */
-    public $patrolMembers;
+    public $troopMembers;
 
     /**
      * @param bool $faker
      */
     public function __construct($mock = true)
     {
-        $this->patrolMembers = new ArrayCollection();
+        $this->troopMembers = new ArrayCollection();
         if ($mock) {
             $faker = Helper::getFaker();
             $this->name = $faker->patrolRole;
