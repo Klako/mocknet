@@ -49,6 +49,12 @@ class GroupMember
     public $confirmedAt;
 
     /**
+     * @Column(nullable=true)
+     * @var string
+     */
+    public $contact_leader_interest;
+
+    /**
      * @ManyToMany(targetEntity="GroupRole", mappedBy="groupMembers")
      * @var ArrayCollection|GroupRole[]
      */
@@ -69,6 +75,7 @@ class GroupMember
             $faker = Helper::getFaker();
             $endDate = $member->created_at->add(new \DateInterval('P1Y'));
             $this->confirmedAt = $faker->dateTimeBetween($member->created_at, $endDate);
+            $this->contact_leader_interest = Helper::random($faker, 'boolean', 5);
         }
         $this->group = $group;
         $group->members->add($this);
