@@ -40,16 +40,19 @@ class Members extends ApiEndpoint
 
             self::addMemberValues($memberObj, $member);
             self::addValue($memberObj, 'confirmed_at', $groupMember->confirmedAt->format('Y-m-d'));
+            self::addValue($memberObj, 'contact_leader_interest', $groupMember->contact_leader_interest);
             self::addValueRaw($memberObj, 'group', $group->id, $group->name);
             if (!$groupMember->troops->isEmpty()) {
                 /** @var \Scouterna\Mocknet\Database\Model\Troop */
                 $troop = $groupMember->troops->first()->troop;
                 self::addValueRaw($memberObj, 'unit', $troop->id, $troop->name);
             }
-            if (!$groupMember->patrols->isEmpty()) {
-                /** @var \Scouterna\Mocknet\Database\Model\Patrol */
-                $patrol = $groupMember->troops->first()->patrol;
-                self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
+            foreach ($groupMember->troops as $troop) {
+                if ($troop->patrol !== null) {
+                    $patrol = $troop->patrol;
+                    self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
+                    break;
+                }
             }
 
             $rolesObj = [];
@@ -68,16 +71,17 @@ class Members extends ApiEndpoint
                         'role_name' => $role->name
                     ];
                 }
-            }
-            foreach ($groupMember->patrols as $patrolMembers) {
-                foreach ($patrolMembers->roles as $role) {
-                    $rolesObj['value']['patrol'][$patrolMembers->patrol->id][$role->id] = [
-                        'role_id' => $role->id,
-                        'role_id' => $role->key,
-                        'role_name' => $role->name
-                    ];
+                if ($troopMembers->patrol) {
+                    foreach ($troopMembers->patrolRoles as $role) {
+                        $rolesObj['value']['patrol'][$troopMembers->patrol->id][$role->id] = [
+                            'role_id' => $role->id,
+                            'role_id' => $role->key,
+                            'role_name' => $role->name
+                        ];
+                    }
                 }
             }
+
             if ($rolesObj) {
                 $memberObj['roles'] = $rolesObj;
             }
@@ -103,6 +107,7 @@ class Members extends ApiEndpoint
 
             self::addMemberValues($memberObj, $member);
             self::addValue($memberObj, 'waiting_since', $groupWaiter->waitingSince->format('Y-m-d'));
+            self::addValue($memberObj, 'contact_leader_interest', $groupWaiter->contact_leader_interest);
             self::addValueRaw($memberObj, 'group', $group->id, $group->name);
 
             $returnObject['data'][$member->id] = $memberObj;
@@ -143,7 +148,6 @@ class Members extends ApiEndpoint
         self::addValue($object, 'contact_email_dad', $member->contact_email_dad);
         self::addValue($object, 'contact_mobile_dad', $member->contact_mobile_dad);
         self::addValue($object, 'contact_telephone_dad', $member->contact_telephone_dad);
-        self::addValue($object, 'contact_leader_interest', $member->contact_leader_interest);
     }
 
     private static function addValue(&$object, $name, $value)

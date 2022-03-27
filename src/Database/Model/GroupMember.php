@@ -31,12 +31,6 @@ class GroupMember
     public $troops;
 
     /**
-     * @OneToMany(targetEntity="PatrolMember", mappedBy="member")
-     * @var ArrayCollection|PatrolMember[]
-     */
-    public $patrols;
-
-    /**
      * @ManyToMany(targetEntity="CustomListRule", inversedBy="members")
      * @var ArrayCollection|CustomListRule[]
      */
@@ -55,6 +49,12 @@ class GroupMember
     public $confirmedAt;
 
     /**
+     * @Column(nullable=true)
+     * @var string
+     */
+    public $contact_leader_interest;
+
+    /**
      * @ManyToMany(targetEntity="GroupRole", mappedBy="groupMembers")
      * @var ArrayCollection|GroupRole[]
      */
@@ -70,12 +70,12 @@ class GroupMember
         $this->roles = new ArrayCollection();
         $this->customListRules = new ArrayCollection();
         $this->troops = new ArrayCollection();
-        $this->patrols = new ArrayCollection();
         $this->customListRules = new ArrayCollection();
         if ($mock) {
             $faker = Helper::getFaker();
             $endDate = $member->created_at->add(new \DateInterval('P1Y'));
             $this->confirmedAt = $faker->dateTimeBetween($member->created_at, $endDate);
+            $this->contact_leader_interest = Helper::random($faker, 'boolean', 5);
         }
         $this->group = $group;
         $group->members->add($this);

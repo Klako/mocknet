@@ -185,12 +185,6 @@ class Member
     public $contact_telephone_dad;
 
     /**
-     * @Column(nullable=true)
-     * @var string
-     */
-    public $contact_leader_interest;
-
-    /**
      * @OneToMany(targetEntity="GroupMember", mappedBy="member")
      * @var ArrayCollection|GroupMember[]
      */
@@ -213,7 +207,7 @@ class Member
             $faker = Helper::getFaker();
             $this->first_name = $faker->firstName;
             $this->last_name = $faker->lastName;
-            $this->note = $this->random($faker, 'sentence', 3);
+            $this->note = Helper::random($faker, 'sentence', 3);
             $this->date_of_birth = $faker->dateTimeBetween('-40 years', '-8 years');
             $this->created_at = $faker->dateTimeBetween($this->date_of_birth);
             $this->sex = $faker->randomElement(self::SEX_ARRAY)['raw_value'];
@@ -224,18 +218,17 @@ class Member
             $this->town = $faker->city;
             $this->country = 'Sverige';
             $this->email = $faker->safeEmail;
-            $this->contact_alt_email = $this->random($faker, 'safeEmail', 5);
-            $this->contact_mobile_phone = $this->random($faker, 'phoneNumber', 5);
-            $this->contact_home_phone = $this->random($faker, 'phoneNumber', 5);
-            $this->contact_mothers_name = $this->random($faker, 'name', 5);
-            $this->contact_mobile_mum = $this->random($faker, 'phoneNumber', 5);
-            $this->contact_telephone_mum = $this->random($faker, 'phoneNumber', 5);
-            $this->contact_email_mum = $this->random($faker, 'safeEmail', 5);
-            $this->contact_fathers_name = $this->random($faker, 'name', 5);
-            $this->contact_mobile_dad = $this->random($faker, 'phoneNumber', 5);
-            $this->contact_telephone_dad = $this->random($faker, 'phoneNumber', 5);
-            $this->contact_email_dad = $this->random($faker, 'safeEmail', 5);
-            $this->contact_leader_interest = $this->random($faker, 'boolean', 5);
+            $this->contact_alt_email = Helper::random($faker, 'safeEmail', 5);
+            $this->contact_mobile_phone = Helper::random($faker, 'phoneNumber', 5);
+            $this->contact_home_phone = Helper::random($faker, 'phoneNumber', 5);
+            $this->contact_mothers_name = Helper::random($faker, 'name', 5);
+            $this->contact_mobile_mum = Helper::random($faker, 'phoneNumber', 5);
+            $this->contact_telephone_mum = Helper::random($faker, 'phoneNumber', 5);
+            $this->contact_email_mum = Helper::random($faker, 'safeEmail', 5);
+            $this->contact_fathers_name = Helper::random($faker, 'name', 5);
+            $this->contact_mobile_dad = Helper::random($faker, 'phoneNumber', 5);
+            $this->contact_telephone_dad = Helper::random($faker, 'phoneNumber', 5);
+            $this->contact_email_dad = Helper::random($faker, 'safeEmail', 5);
         }
     }
 
