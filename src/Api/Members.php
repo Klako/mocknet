@@ -40,6 +40,7 @@ class Members extends ApiEndpoint
 
             self::addMemberValues($memberObj, $member);
             self::addValue($memberObj, 'confirmed_at', $groupMember->confirmedAt->format('Y-m-d'));
+            self::addValue($memberObj, 'contact_leader_interest', $groupMember->contact_leader_interest);
             self::addValueRaw($memberObj, 'group', $group->id, $group->name);
             if (!$groupMember->troops->isEmpty()) {
                 /** @var \Scouterna\Mocknet\Database\Model\Troop */
@@ -106,6 +107,7 @@ class Members extends ApiEndpoint
 
             self::addMemberValues($memberObj, $member);
             self::addValue($memberObj, 'waiting_since', $groupWaiter->waitingSince->format('Y-m-d'));
+            self::addValue($memberObj, 'contact_leader_interest', $groupWaiter->contact_leader_interest);
             self::addValueRaw($memberObj, 'group', $group->id, $group->name);
 
             $returnObject['data'][$member->id] = $memberObj;
@@ -146,7 +148,6 @@ class Members extends ApiEndpoint
         self::addValue($object, 'contact_email_dad', $member->contact_email_dad);
         self::addValue($object, 'contact_mobile_dad', $member->contact_mobile_dad);
         self::addValue($object, 'contact_telephone_dad', $member->contact_telephone_dad);
-        self::addValue($object, 'contact_leader_interest', $member->contact_leader_interest);
     }
 
     private static function addValue(&$object, $name, $value)

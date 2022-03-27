@@ -15,4 +15,9 @@ class Helper
     {
         return \mb_strtolower(\str_replace(' ', '_', $value));
     }
+
+    public static function random($faker, $field, $chance)
+    {
+        return $faker->randomDigit < $chance ? $faker->{$field} : null;
+    }
 }
