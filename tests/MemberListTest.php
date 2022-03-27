@@ -158,8 +158,7 @@ class MemberListTest extends TestCase
         $em->persist($troopMember);
         $patrol = new Model\Patrol($troop);
         $em->persist($patrol);
-        $patrolMember = new Model\PatrolMember($patrol, $groupMember);
-        $em->persist($patrolMember);
+        $troopMember->setPatrol($patrol);
         $em->flush();
 
         $request = $this->request->withAttribute('groupId', $group->id);
