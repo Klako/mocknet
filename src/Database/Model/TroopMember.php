@@ -31,6 +31,18 @@ class TroopMember
     public $member;
 
     /**
+     * @ManyToOne(targetEntity="Patrol", inversedBy="members")
+     * @var Patrol
+     */
+    public $patrol;
+
+    /**
+     * @ManyToMany(targetEntity="PatrolRole", mappedBy="troopMembers")
+     * @var ArrayCollection|PatrolRole[]
+     */
+    public $patrolRoles;
+
+    /**
      * @ManyToMany(targetEntity="TroopRole", mappedBy="troopMembers")
      * @var ArrayCollection|TroopRole[]
      */
@@ -39,6 +51,7 @@ class TroopMember
     public function __construct(Troop $troop, GroupMember $member)
     {
         $this->roles = new ArrayCollection();
+        $this->patrolRoles = new ArrayCollection();
         $this->troop = $troop;
         $troop->members->add($this);
         $this->member = $member;
@@ -49,5 +62,15 @@ class TroopMember
     {
         $this->roles->add($role);
         $role->troopMembers->add($this);
+    }
+
+    public function setPatrol(Patrol $patrol) {
+        if ($this->patrol !== null) {
+            $this->patrol->members->removeElement($this);
+        }
+        $this->patrol = $patrol;
+        if ($patrol !== null) {
+            $patrol->members->add($this);
+        }
     }
 }
