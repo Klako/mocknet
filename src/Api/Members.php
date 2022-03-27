@@ -46,9 +46,22 @@ class Members extends ApiEndpoint
                 /** @var \Scouterna\Mocknet\Database\Model\Troop */
                 $troop = $groupMember->troops->first()->troop;
                 self::addValueRaw($memberObj, 'unit', $troop->id, $troop->name);
+                
             }
+            $troopRoleIds = [];
+            $troopRoleNames = [];
+            foreach ($groupMember->troops as $troopMember) {
+                if (!$troopMember->roles->isEmpty()) {
+                    /** @var \Scouterna\Mocknet\Database\Model\TroopRole */
+                    $troopRole = $troopMember->roles->first();
+                    $troopRoleIds[] = $troopRole->id;
+                    $troopRoleNames[] = $troopRole->name;
+                }
+            }
+            self::addValueRaw($memberObj, 'unit_role', join(',', $troopRoleIds), join(', ', $troopRoleNames));
+            
             foreach ($groupMember->troops as $troop) {
-                if ($troop->patrol !== null) {
+                if ($troop->patrol) {
                     $patrol = $troop->patrol;
                     self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
                     break;
