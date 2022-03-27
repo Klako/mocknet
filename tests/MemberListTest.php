@@ -132,6 +132,9 @@ class MemberListTest extends TestCase
         $em->persist($troop);
         $troopMember = new Model\TroopMember($troop, $groupMember);
         $em->persist($troopMember);
+        $troopRole = new Model\TroopRole();
+        $em->persist($troopRole);
+        $troopMember->roles->add($troopRole);
         $em->flush();
 
         $request = $this->request->withAttribute('groupId', $group->id);
@@ -142,6 +145,8 @@ class MemberListTest extends TestCase
 
         assertEquals($troop->id, $result['data'][$member->id]['unit']['raw_value']);
         assertEquals($troop->name, $result['data'][$member->id]['unit']['value']);
+        assertEquals($troopRole->id, $result['data'][$member->id]['unit_role']['raw_value']);
+        assertEquals($troopRole->name, $result['data'][$member->id]['unit_role']['value']);
     }
 
     public function testPatrolRelation() {
