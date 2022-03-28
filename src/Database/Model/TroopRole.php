@@ -32,8 +32,8 @@ class TroopRole
     public $key;
 
     /**
-     * @ManyToMany(targetEntity="TroopMember", inversedBy="roles")
-     * @var ArrayCollection|TroopMember[]
+     * @ManyToMany(targetEntity="TroopMemberRole", inversedBy="roles")
+     * @var ArrayCollection|TroopMemberRole[]
      */
     public $troopMembers;
 

@@ -38,10 +38,16 @@ class Troop
     public $patrols;
 
     /**
-     * @OneToMany(targetEntity="TroopMember", mappedBy="troop")
-     * @var ArrayCollection|TroopMember[]
+     * @OneToMany(targetEntity="GroupMember", mappedBy="troop")
+     * @var ArrayCollection|GroupMember[]
      */
     public $members;
+
+    /**
+     * @OneToMany(targetEntity="TroopMemberRole", mappedBy="troop")
+     * @var ArrayCollection|TroopMemberRole[]
+     */
+    public $memberRoles;
 
     public function __construct(ScoutGroup $group, $mock = true)
     {
