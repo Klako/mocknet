@@ -53,6 +53,7 @@ class Troop
     {
         $this->patrols = new ArrayCollection();
         $this->members = new ArrayCollection();
+        $this->memberRoles = new ArrayCollection();
         $this->group = $group;
         $group->troops->add($this);
         if ($mock){

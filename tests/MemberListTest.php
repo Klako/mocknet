@@ -13,6 +13,7 @@ use Slim\Psr7\Response;
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertCount;
+use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertIsArray;
 use function PHPUnit\Framework\assertIsObject;
@@ -23,35 +24,35 @@ use function PHPUnit\Framework\assertThat;
 class MemberListTest extends TestCase
 {
     /** @var \Doctrine\ORM\EntityManager */
-    private static $entityManager;
+    private $entityManager;
 
     /** @var \Scouterna\Mocknet\Api\Members */
-    private static $endpoint;
+    private $endpoint;
 
     /** @var \Slim\Psr7\Request */
-    private static $request;
+    private $request;
 
-    public static function setUpBeforeClass(): void
+    protected function setUp(): void
     {
         $factory = new ManagerFactory();
         $factory->setConnection([
             'driver' => 'pdo_sqlite',
             'path' => ':memory:'
         ]);
-        self::$entityManager = $factory->makeManager();
-        $metadataFactory = self::$entityManager->getMetadataFactory();
-        $tool = new SchemaTool(self::$entityManager);
+        $this->entityManager = $factory->makeManager();
+        $metadataFactory = $this->entityManager->getMetadataFactory();
+        $tool = new SchemaTool($this->entityManager);
         $tool->updateSchema($metadataFactory->getAllMetadata());
-        self::$endpoint = new Members(self::$entityManager);
+        $this->endpoint = new Members($this->entityManager);
         $requestFactory = new ServerRequestFactory();
-        self::$request = $requestFactory->createServerRequest('GET', '/');
+        $this->request = $requestFactory->createServerRequest('GET', '/');
     }
 
     protected function tearDown(): void
     {
-        self::$entityManager->clear();
-        self::$entityManager->flush();
-        self::$entityManager->close();
+        $this->entityManager->clear();
+        $this->entityManager->flush();
+        $this->entityManager->close();
     }
 
     public function testGroupMembers()
@@ -59,18 +60,18 @@ class MemberListTest extends TestCase
         $nrOfMembers = 10;
         $group = new Model\ScoutGroup();
         $group->name = "Testgroup";
-        self::$entityManager->persist($group);
+        $this->entityManager->persist($group);
         foreach (range(1, $nrOfMembers) as $i) {
             $member = new Model\Member();
-            self::$entityManager->persist($member);
+            $this->entityManager->persist($member);
             $groupMember = new Model\GroupMember($group, $member);
-            self::$entityManager->persist($groupMember);
+            $this->entityManager->persist($groupMember);
             $group->members->add($groupMember);
         }
-        self::$entityManager->flush();
+        $this->entityManager->flush();
 
-        $request = self::$request->withAttribute('groupId', $group->id);
-        $apiResponse = self::$endpoint->__invoke($request, new Response(), []);
+        $request = $this->request->withAttribute('groupId', $group->id);
+        $apiResponse = $this->endpoint->__invoke($request, new Response(), []);
         $response = $apiResponse->getBody()->__toString();
         assertJson($response);
         $result = json_decode($response, true);
@@ -117,5 +118,63 @@ class MemberListTest extends TestCase
             return;
         }
         assertEquals($val, $memberObj[$fieldName]['value']);
+    }
+
+    public function testTroopRelation() {
+        $em = $this->entityManager;
+        $group = new Model\ScoutGroup();
+        $em->persist($group);
+        $member = new Model\Member();
+        $em->persist($member);
+        $groupMember = new Model\GroupMember($group, $member);
+        $em->persist($groupMember);
+        $troop = new Model\Troop($group);
+        $em->persist($troop);
+        $troop->members->add($groupMember);
+        $groupMember->troop = $troop;
+        $troopRole = new Model\TroopRole();
+        $em->persist($troopRole);
+        $troopMemberRole = new Model\TroopMemberRole($troop, $groupMember, $troopRole);
+        $em->persist($troopMemberRole);
+        $em->flush();
+
+        $request = $this->request->withAttribute('groupId', $group->id);
+        $apiResponse = $this->endpoint->__invoke($request, new Response(), []);
+        $response = $apiResponse->getBody()->__toString();
+        assertJson($response);
+        $result = json_decode($response, true);
+
+        assertEquals($troop->id, $result['data'][$member->id]['unit']['raw_value']);
+        assertEquals($troop->name, $result['data'][$member->id]['unit']['value']);
+        assertEquals($troopRole->id, $result['data'][$member->id]['unit_role']['raw_value']);
+        assertEquals($troopRole->name, $result['data'][$member->id]['unit_role']['value']);
+    }
+
+    public function testPatrolRelation() {
+        $em = $this->entityManager;
+        $group = new Model\ScoutGroup();
+        $em->persist($group);
+        $member = new Model\Member();
+        $em->persist($member);
+        $groupMember = new Model\GroupMember($group, $member);
+        $em->persist($groupMember);
+        $troop = new Model\Troop($group);
+        $em->persist($troop);
+        $troop->members->add($groupMember);
+        $groupMember->troop = $troop;
+        $patrol = new Model\Patrol($troop);
+        $em->persist($patrol);
+        $patrol->members->add($groupMember);
+        $groupMember->patrol = $patrol;
+        $em->flush();
+
+        $request = $this->request->withAttribute('groupId', $group->id);
+        $apiResponse = $this->endpoint->__invoke($request, new Response(), []);
+        $response = $apiResponse->getBody()->__toString();
+        assertJson($response);
+        $result = json_decode($response, true);
+
+        assertEquals($patrol->id, $result['data'][$member->id]['patrol']['raw_value']);
+        assertEquals($patrol->name, $result['data'][$member->id]['patrol']['value']);
     }
 }
