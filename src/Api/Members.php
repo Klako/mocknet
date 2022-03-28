@@ -66,6 +66,7 @@ class Members extends ApiEndpoint
                 ];
             }
             foreach ($groupMember->troopRoles as $troopRole) {
+                $role = $troopRole->role;
                 $rolesObj['value']['troop'][$troopRole->troop->id][$role->id] = [
                     'role_id' => $role->id,
                     'role_key' => $role->key,
@@ -73,6 +74,7 @@ class Members extends ApiEndpoint
                 ];
             }
             foreach ($groupMember->patrolRoles as $patrolRole) {
+                $role = $patrolRole->role;
                 $rolesObj['value']['patrol'][$patrolRole->patrol->id][$role->id] = [
                     'role_id' => $role->id,
                     'role_id' => $role->key,

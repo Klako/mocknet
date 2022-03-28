@@ -21,7 +21,7 @@ class PatrolMemberRole
      * @ManyToOne(targetEntity="Patrol", inversedBy="members")
      * @var Patrol
      */
-    public $troop;
+    public $patrol;
 
     /**
      * @ManyToOne(targetEntity="GroupMember", inversedBy="troops")
@@ -35,12 +35,12 @@ class PatrolMemberRole
      */
     public $role;
 
-    public function __construct(Troop $troop, GroupMember $member, PatrolRole $role)
+    public function __construct(Patrol $patrol, GroupMember $member, PatrolRole $role)
     {
-        $this->troop = $troop;
-        $troop->members->add($this);
+        $this->patrol = $patrol;
+        $patrol->memberRoles->add($this);
         $this->member = $member;
-        $member->troops->add($this);
+        $member->patrolRoles->add($this);
         $this->role = $role;
         $role->patrolMembers->add($this);
     }
