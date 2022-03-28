@@ -42,17 +42,19 @@ class Members extends ApiEndpoint
             self::addValue($memberObj, 'confirmed_at', $groupMember->confirmedAt->format('Y-m-d'));
             self::addValue($memberObj, 'contact_leader_interest', $groupMember->contact_leader_interest);
             self::addValueRaw($memberObj, 'group', $group->id, $group->name);
-            if (!$groupMember->troops->isEmpty()) {
-                /** @var \Scouterna\Mocknet\Database\Model\Troop */
-                $troop = $groupMember->troops->first()->troop;
+            if ($troop = $groupMember->troop) {
                 self::addValueRaw($memberObj, 'unit', $troop->id, $troop->name);
             }
-            foreach ($groupMember->troops as $troop) {
-                if ($troop->patrol !== null) {
-                    $patrol = $troop->patrol;
-                    self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
-                    break;
-                }
+            $troopRoleIds = [];
+            $troopRoleNames = [];
+            foreach ($groupMember->troopRoles as $troopRole) {
+                $troopRoleIds[] = $troopRole->role->id;
+                $troopRoleNames[] = $troopRole->role->name;
+            }
+            self::addValueRaw($memberObj, 'unit_role', join(',', $troopRoleIds), join(', ', $troopRoleNames));
+            
+            if ($patrol = $groupMember->patrol) {
+                self::addValueRaw($memberObj, 'patrol', $patrol->id, $patrol->name);
             }
 
             $rolesObj = [];
@@ -63,23 +65,19 @@ class Members extends ApiEndpoint
                     'role_name' => $role->name
                 ];
             }
-            foreach ($groupMember->troops as $troopMembers) {
-                foreach ($troopMembers->roles as $role) {
-                    $rolesObj['value']['troop'][$troopMembers->troop->id][$role->id] = [
-                        'role_id' => $role->id,
-                        'role_key' => $role->key,
-                        'role_name' => $role->name
-                    ];
-                }
-                if ($troopMembers->patrol) {
-                    foreach ($troopMembers->patrolRoles as $role) {
-                        $rolesObj['value']['patrol'][$troopMembers->patrol->id][$role->id] = [
-                            'role_id' => $role->id,
-                            'role_id' => $role->key,
-                            'role_name' => $role->name
-                        ];
-                    }
-                }
+            foreach ($groupMember->troopRoles as $troopRole) {
+                $rolesObj['value']['troop'][$troopRole->troop->id][$role->id] = [
+                    'role_id' => $role->id,
+                    'role_key' => $role->key,
+                    'role_name' => $role->name
+                ];
+            }
+            foreach ($groupMember->patrolRoles as $patrolRole) {
+                $rolesObj['value']['patrol'][$patrolRole->patrol->id][$role->id] = [
+                    'role_id' => $role->id,
+                    'role_id' => $role->key,
+                    'role_name' => $role->name
+                ];
             }
 
             if ($rolesObj) {
