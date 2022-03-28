@@ -25,10 +25,28 @@ class GroupMember
     public $group;
 
     /**
-     * @OneToMany(targetEntity="TroopMember", mappedBy="member")
-     * @var ArrayCollection|TroopMember[]
+     * @ManyToOne(targetEntity="Troop", inversedBy="members")
+     * @var Troop
      */
-    public $troops;
+    public $troop;
+
+    /**
+     * @OneToMany(targetEntity="TroopMemberRole", mappedBy="member")
+     * @var ArrayCollection|TroopMemberRole[]
+     */
+    public $troopRoles;
+
+    /**
+     * @ManyToOne(targetEntity="Patrol", inversedBy="members")
+     * @var Patrol
+     */ 
+    public $patrol;
+
+    /**
+     * @OneToMany(targetEntity="PatrolMemberRole", mappedBy="member")
+     * @var ArrayCollection|PatrolMemberRole[]
+     */
+    public $patrolRoles;
 
     /**
      * @ManyToMany(targetEntity="CustomListRule", inversedBy="members")
@@ -69,8 +87,8 @@ class GroupMember
     {
         $this->roles = new ArrayCollection();
         $this->customListRules = new ArrayCollection();
-        $this->troops = new ArrayCollection();
-        $this->customListRules = new ArrayCollection();
+        $this->troopRoles = new ArrayCollection();
+        $this->patrolRoles = new ArrayCollection();
         if ($mock) {
             $faker = Helper::getFaker();
             $endDate = $member->created_at->add(new \DateInterval('P1Y'));
