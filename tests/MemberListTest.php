@@ -130,11 +130,12 @@ class MemberListTest extends TestCase
         $em->persist($groupMember);
         $troop = new Model\Troop($group);
         $em->persist($troop);
-        $troopMember = new Model\TroopMember($troop, $groupMember);
-        $em->persist($troopMember);
+        $troop->members->add($groupMember);
+        $groupMember->troop = $troop;
         $troopRole = new Model\TroopRole();
         $em->persist($troopRole);
-        $troopMember->roles->add($troopRole);
+        $troopMemberRole = new Model\TroopMemberRole($troop, $groupMember, $troopRole);
+        $em->persist($troopMemberRole);
         $em->flush();
 
         $request = $this->request->withAttribute('groupId', $group->id);
@@ -159,11 +160,12 @@ class MemberListTest extends TestCase
         $em->persist($groupMember);
         $troop = new Model\Troop($group);
         $em->persist($troop);
-        $troopMember = new Model\TroopMember($troop, $groupMember);
-        $em->persist($troopMember);
+        $troop->members->add($groupMember);
+        $groupMember->troop = $troop;
         $patrol = new Model\Patrol($troop);
         $em->persist($patrol);
-        $troopMember->setPatrol($patrol);
+        $patrol->members->add($groupMember);
+        $groupMember->patrol = $patrol;
         $em->flush();
 
         $request = $this->request->withAttribute('groupId', $group->id);
