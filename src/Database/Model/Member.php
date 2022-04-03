@@ -44,6 +44,12 @@ class Member
      * @Column
      * @var string
      */
+    public $password;
+
+    /**
+     * @Column
+     * @var string
+     */
     public $first_name;
 
     /**
