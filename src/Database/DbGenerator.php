@@ -51,14 +51,13 @@ class DbGenerator
     {
         $troopCount = 10;
         /** @var Model\GroupMember[][] */
-        $groupMembers = $group->members;
         $troopDivisions = $this->group($group->members->toArray(), $troopCount, 10);
         foreach ($troopDivisions as $troopDivision) {
             $troop = new Model\Troop($group);
             $entityManager->persist($troop);
             foreach ($troopDivision as $groupMember) {
-                $troopMember = new Model\TroopMemberRole($troop, $groupMember);
-                $entityManager->persist($troopMember);
+                $troop->members->add($groupMember);
+                $groupMember->troop = $troop;
             }
             $this->createPatrols($entityManager, $troop);
         }
@@ -66,14 +65,14 @@ class DbGenerator
 
     private function createPatrols($entityManager, $troop)
     {
-        /** @var Model\TroopMemberRole[][] */
+        /** @var Model\GroupMember[][] */
         $patrolDivisions = $this->group($troop->members->toArray(), 4, 2);
         foreach ($patrolDivisions as $patrolDivision) {
             $patrol = new Model\Patrol($troop);
             $entityManager->persist($patrol);
             foreach ($patrolDivision as $troopMember) {
-                $patrolMember = new Model\PatrolMemberRole($patrol, $troopMember->member);
-                $entityManager->persist($patrolMember);
+                $patrol->members->add($troopMember);
+                $troopMember->patrol = $patrol;
             }
         }
     }
