@@ -89,6 +89,8 @@ class Members extends ApiEndpoint
             $returnObject['data'][$member->id] = $memberObj;
         }
 
+        $returnObject['labels'] = self::memberlistLabels();
+
         return $returnObject;
     }
 
@@ -112,6 +114,8 @@ class Members extends ApiEndpoint
 
             $returnObject['data'][$member->id] = $memberObj;
         }
+
+        $returnObject['labels'] = self::waitinglistLabels();
 
         return $returnObject;
     }
@@ -165,5 +169,95 @@ class Members extends ApiEndpoint
                 'value' => strval($value)
             ];
         }
+    }
+
+    private static function memberlistLabels()
+    {
+        return [
+            "member_no" => "Medlemsnr.",
+            "first_name" => "Förnamn",
+            "last_name" => "Efternamn",
+            "ssno" => "Personnummer",
+            "nickname" => "Smeknamn",
+            "note" => "Noteringar",
+            "date_of_birth" => "Födelsedatum=>",
+            "status" => "Status",
+            "created_at" => "Registrerad Scouterna",
+            "confirmed_at" => "Startdatum Kår",
+            "group" => "Kår",
+            "unit" => "Avdelning",
+            "patrol" => "Patrull",
+            "unit_role" => "Avdelningsroll",
+            "group_role" => "Kårfunktion",
+            "sex" => "Kön",
+            "address_co" => "c\/o",
+            "address_1" => "Adress",
+            "address_2" => "Adress, rad 2",
+            "address_3" => "Adress, rad 3",
+            "postcode" => "Postnummer",
+            "town" => "Postort",
+            "country" => "Land",
+            "email" => "Primär e-postadress",
+            "contact_alt_email" => "Alternativ e-post",
+            "contact_mobile_phone" => "Mobiltelefon",
+            "contact_home_phone" => "Hemtelefon",
+            "contact_mothers_name" => "Anhörig 1 namn",
+            "contact_email_mum" => "Anhörig 1 e-post",
+            "contact_mobile_mum" => "Anhörig 1 mobiltelefon",
+            "contact_telephone_mum" => "Anhörig 1 hemtelefon",
+            "contact_fathers_name" => "Anhörig 2 namn",
+            "contact_email_dad" => "Anhörig 2 e-post",
+            "contact_mobile_dad" => "Anhörig 2 mobiltelefon",
+            "contact_telephone_dad" => "Anhörig 2 hemtelefon",
+            "contact_work_phone" => "Arbetstelefon",
+            "contact_email" => "E-post",
+            "contact_leader_interest" => "Jag kan hjälpa till!",
+            "prev_term" => "Höst 2021",
+            "prev_term_due_date" => "Medlemsavgift förfallodatum",
+            "current_term" => "Vår 2022",
+            "current_term_due_date" => "Medlemsavgift förfallodatum",
+            "kid" => "Kid",
+            "roles" => "Roller",
+            "avatar_updated" => "Bild (Senast uppdaterad datum)",
+            "avatar_url" => "Bild (URL)"
+        ];
+    }
+
+    private static function waitinglistLabels()
+    {
+        return [
+            "member_no" => "Medlemsnr.",
+            "first_name" => "Förnamn",
+            "last_name" => "Efternamn",
+            "ssno" => "Personnummer",
+            "note" => "Noteringar",
+            "date_of_birth" => "Födelsedatum=>",
+            "status" => "Status",
+            "created_at" => "Registrerad Scouterna",
+            "confirmed_at" => "Startdatum Kår",
+            "group" => "Kår",
+            "waiting_since" => "Ködatum",
+            "sex" => "Kön",
+            "address_co" => "c\/o",
+            "address_1" => "Adress",
+            "address_2" => "Adress, rad 2",
+            "address_3" => "Adress, rad 3",
+            "postcode" => "Postnummer",
+            "town" => "Postort",
+            "country" => "Land",
+            "email" => "Primär e-postadress",
+            "contact_alt_email" => "Alternativ e-post",
+            "contact_mobile_phone" => "Mobiltelefon",
+            "contact_home_phone" => "Hemtelefon",
+            "contact_mothers_name" => "Anhörig 1 namn",
+            "contact_email_mum" => "Anhörig 1 e-post",
+            "contact_mobile_mum" => "Anhörig 1 mobiltelefon",
+            "contact_telephone_mum" => "Anhörig 1 hemtelefon",
+            "contact_fathers_name" => "Anhörig 2 namn",
+            "contact_email_dad" => "Anhörig 2 e-post",
+            "contact_mobile_dad" => "Anhörig 2 mobiltelefon",
+            "contact_telephone_dad" => "Anhörig 2 hemtelefon",
+            "contact_leader_interest" => "Jag kan hjälpa till!",
+        ];
     }
 }
