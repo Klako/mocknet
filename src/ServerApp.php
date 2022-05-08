@@ -23,6 +23,7 @@ class ServerApp
         $app = AppFactory::create();
 
         $app->add(new HttpBasicAuthentication([
+            'path' => ['/api/organisation', '/api/group'],
             'users' => [
                 $groupId => $apiKey
             ],
@@ -31,6 +32,7 @@ class ServerApp
             }
         ]));
 
+        $app->any('/api/authenticate', new Api\Authenticate($entityManager));
         $app->get('/api/organisation/group', new Api\GroupInfo($entityManager));
         $app->get('/api/group/memberlist', new Api\Members($entityManager));
         $app->get('/api/group/customlists', new Api\CustomLists($entityManager));

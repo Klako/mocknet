@@ -44,6 +44,18 @@ class Member
      * @Column
      * @var string
      */
+    public $password;
+
+    /**
+     * @Column(nullable=true)
+     * @var string
+     */
+    public $jwt_token;
+
+    /**
+     * @Column
+     * @var string
+     */
     public $first_name;
 
     /**
@@ -203,8 +215,10 @@ class Member
     {
         $this->groupMembers = new ArrayCollection();
         $this->groupWaits = new ArrayCollection();
+        $this->jwt_token = (string) $this->id;
         if ($mock) {
             $faker = Helper::getFaker();
+            $this->password = $faker->password;
             $this->first_name = $faker->firstName;
             $this->last_name = $faker->lastName;
             $this->note = Helper::random($faker, 'sentence', 3);
